@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">MapApplication2023</string>
+    <string name="app_name">Bookaroo</string>
+    <string name="libraries">Libraries</string>
+    <string name="back">back</string>
+    <string name="read">Read</string>
+    <string name="favourite">Favourite</string>
+    <string name="total">Total</string>
+    <string name="book_stores">Book Stores</string>
+    <string name="books">Books</string>
 </resources>

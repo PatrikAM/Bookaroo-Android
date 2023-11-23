@@ -11,11 +11,11 @@ plugins {
 }
 
 android {
-    namespace = "cz.mendelu.pef.mapapplication2023"
+    namespace = "cz.mendelu.pef.xmichl.bookaroo"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "cz.mendelu.pef.mapapplication2023"
+        applicationId = "cz.mendelu.pef.xmichl.bookaroo"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
@@ -58,6 +58,9 @@ android {
 }
 
 dependencies {
+
+    // Icons
+    implementation("androidx.compose.material:material-icons-extended:1.4.2")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -104,6 +107,12 @@ dependencies {
     // Navigation
     implementation("io.github.raamcosta.compose-destinations:animations-core:1.8.42-beta")
     ksp("io.github.raamcosta.compose-destinations:ksp:1.8.42-beta")
+
+
+    // Moshi for json converter
+    implementation("com.squareup.moshi:moshi:1.14.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+
 
 }
 // For Hilt
