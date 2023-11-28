@@ -8,6 +8,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     // Navigation using: https://github.com/raamcosta/compose-destinations
     id("com.google.devtools.ksp") version "1.8.10-1.0.9"
+    id("io.realm.kotlin")
 }
 
 android {
@@ -112,6 +113,11 @@ dependencies {
     // Moshi for json converter
     implementation("com.squareup.moshi:moshi:1.14.0")
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+
+    // Realm
+    implementation("io.realm.kotlin:library-base:1.11.0")
+//    implementation("io.realm.kotlin:library-sync:1.11.0") If using Device Sync
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0")
 
 
 }

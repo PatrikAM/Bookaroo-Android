@@ -27,6 +27,8 @@ val AvatarColors: List<Color> = listOf(
     Color(0xFF88304a)
 )
 
+val bookarooPrimaryColor = Color(0xFFDF915A)
+
 
 @Composable
 fun getBackgroundColor() = if (isSystemInDarkTheme()) DarkBackground else LightBackground
@@ -39,4 +41,3 @@ fun getTintColor() = if (isSystemInDarkTheme()) Color.White else Color.Black
 
 @Composable
 fun getTintAltColor() = if (isSystemInDarkTheme()) Color.Gray else Color.LightGray
-

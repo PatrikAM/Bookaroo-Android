@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.LibraryBooks
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Store
@@ -49,39 +48,41 @@ fun BaseScreen(
         containerColor = getBackgroundColor(),
         floatingActionButton = floatingActionButton,
         topBar = {
-            TopAppBar(
-                title = {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentWidth(align = Alignment.CenterHorizontally)
-                    ) {
-                        if (topBarText != null) {
-                            Text(
-                                text = topBarText,
-                                style = MaterialTheme.typography.headlineMedium,
-                                color = basicTextColor(),
-                                modifier = Modifier
-                                    .padding(start = 0.dp)
-                                    .weight(1.5f),
-                                overflow = TextOverflow.Ellipsis
-                            )
+            if (topBarText != null) {
+                TopAppBar(
+                    title = {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentWidth(align = Alignment.CenterHorizontally)
+                        ) {
+                            if (topBarText != null) {
+                                Text(
+                                    text = topBarText,
+                                    style = MaterialTheme.typography.headlineMedium,
+                                    color = basicTextColor(),
+                                    modifier = Modifier
+                                        .padding(start = 0.dp)
+                                        .weight(1.5f),
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                        }
+                    },
+                    actions = actions,
+                    navigationIcon = {
+                        if (onBackClick != null) {
+                            IconButton(onClick = onBackClick) {
+                                Icon(
+                                    imageVector = Icons.Filled.ArrowBack,
+                                    contentDescription = stringResource(R.string.back),
+                                    tint = getTintColor()
+                                )
+                            }
                         }
                     }
-                },
-                actions = actions,
-                navigationIcon = {
-                    if (onBackClick != null) {
-                        IconButton(onClick = onBackClick) {
-                            Icon(
-                                imageVector = Icons.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.back),
-                                tint = getTintColor()
-                            )
-                        }
-                    }
-                }
-            )
+                )
+            }
         },
         bottomBar = {
             if (isNavScreen)

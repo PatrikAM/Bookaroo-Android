@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfLibrariesScreenDestination
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.LoginScreenDestination
 
 
 @Destination(start = true, route = "switcher")
@@ -14,6 +15,6 @@ fun Switcher(
     // TODO: check for user logged in
     // TODO: show login screen
     // TODO: download all necessary data, show splash with loading
-
-    navigator.navigate(ListOfLibrariesScreenDestination())
+    navigator.navigate(LoginScreenDestination())
+//    navigator.navigate(ListOfLibrariesScreenDestination())
 }

@@ -1,19 +1,19 @@
 package cz.mendelu.pef.xmichl.bookaroo.model
-
-import java.util.UUID
+import kotlin.random.Random
 
 val libraryList = listOf(
-    Library(UUID.randomUUID(), "Library1", createRandomReader(), 1, 2, 3),
-    Library(UUID.randomUUID(), "Library2", createRandomReader(), 3, 4, 666)
+    Library(org.mongodb.kbson.ObjectId(), "Library1", org.mongodb.kbson.ObjectId(), 1, 2, 3),
+    Library(org.mongodb.kbson.ObjectId(), "Library2", org.mongodb.kbson.ObjectId(), 3, 4, 666)
 )
 
 
 fun createRandomReader(): Reader {
+    val num: Int = Random.nextInt()
     return Reader(
-        UUID.randomUUID(),
-        "ReaderName",
-        "reader@example.com",
-        "randomPassword",
+        org.mongodb.kbson.ObjectId(),
+        "ReaderName$num",
+        "reader$num@example.com",
+        "randomPassword.1",
         "randomToken"
     )
 }

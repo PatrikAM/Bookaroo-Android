@@ -7,4 +7,10 @@
     <string name="total">Total</string>
     <string name="book_stores">Book Stores</string>
     <string name="books">Books</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="log_in">Log In</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="already_have_an_account">Already have an account?</string>
 </resources>

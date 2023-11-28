@@ -1,14 +1,14 @@
 package cz.mendelu.pef.xmichl.bookaroo.model
 
 import com.squareup.moshi.JsonClass
-import java.util.UUID
+import org.mongodb.kbson.ObjectId
 
 @JsonClass(generateAdapter = true)
 data class Library(
-    var id: UUID,
+    var id: ObjectId,
     var name: String?,
-    var owner: Reader?,
-    var favouriteCount: Int?,
-    var total: Int?,
-    var readCount: Int?
+    var ownerId: ObjectId,
+    var favouriteCount: Int? = 0,
+    var total: Int? = 0,
+    var readCount: Int? = 0
 )

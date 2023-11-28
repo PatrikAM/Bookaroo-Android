@@ -1,13 +1,13 @@
 package cz.mendelu.pef.xmichl.bookaroo.model
 
 import com.squareup.moshi.JsonClass
-import java.util.UUID
+import org.mongodb.kbson.ObjectId
 
 @JsonClass(generateAdapter = true)
 data class Reader(
-    var id: UUID?,
+    var id: ObjectId?,
     var name: String?,
-    var email: String?,
+    var login: String?,
     var password: String?,
     var token: String?
 )

@@ -28,6 +28,7 @@ import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BookarooBigCard
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.AddEditLibraryScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfLibrariesScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintColor
+import org.mongodb.kbson.ObjectId
 import java.util.UUID
 
 @Destination(route = "libraries")
@@ -86,7 +87,7 @@ fun ListOfLibrariesScreen(
 fun ListOfLibrariesScreenContent(
     paddingValues: PaddingValues,
     uiState: UiState<List<Library>, ListOfLibrariesErrors>,
-    onRowClick: (id: UUID) -> Unit
+    onRowClick: (id: ObjectId) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -99,7 +100,7 @@ fun ListOfLibrariesScreenContent(
             item {
                 BookarooBigCard(
                     title = it.name ?: "",
-                    subtitle = it.owner?.name ?: "",
+                    subtitle = it.ownerId.toString() ?: "",
                     modifier = Modifier
                         .size(width = 320.dp, height = 170.dp)
                         .fillParentMaxWidth(0.9f)
