@@ -88,8 +88,6 @@ dependencies {
     implementation("com.google.maps.android:maps-compose-widgets:3.1.1")
     implementation("com.google.maps.android:maps-compose-utils:3.1.1")
 
-
-
     // Room
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
@@ -99,6 +97,10 @@ dependencies {
     kapt("androidx.room:room-compiler:2.4.3")
     implementation("androidx.room:room-runtime:2.4.3")
     // End room
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.44")
