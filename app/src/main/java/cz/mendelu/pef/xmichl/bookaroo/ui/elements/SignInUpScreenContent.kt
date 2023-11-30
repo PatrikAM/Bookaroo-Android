@@ -19,7 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import cz.mendelu.pef.xmichl.bookaroo.R
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.login.LoginData
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.login.LoginErrors
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.login.SignInUpViewModel
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.bookarooPrimaryColor
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintAltColor
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintColor
@@ -30,7 +34,10 @@ fun SingInUpScreenContent(
     onPrimaryButtonClick: () -> Unit,
     primaryButtonText: @Composable () -> Unit,
     secondaryButtonText: @Composable () -> Unit,
-    hintText: String
+    hintText: String,
+    data: LoginData,
+    actions: SignInUpViewModel,
+    errors: LoginErrors?
 ) {
 
     Column(
@@ -46,25 +53,36 @@ fun SingInUpScreenContent(
         )
 
         MyTextfield(
-            value = "",
+            value = data.username,
             singleLine = true,
-            onValueChange = {},
+            onValueChange = {
+                actions.onUsernameChanged(it)
+            },
             leadingIcon = Icons.Outlined.AccountCircle,
             label = stringResource(R.string.email),
-            onClearClick = { /*TODO*/ }
+            onClearClick = {
+                actions.onUsernameChanged(null)
+            },
+            textError = errors?.usernameError
         )
 
         MyTextfield(
-            value = "",
-            onValueChange = {},
+            value = data.password,
+            onValueChange = {
+                actions.onPasswordChanged(it)
+            },
             leadingIcon = Icons.Filled.Password,
             label = stringResource(R.string.password),
-            onClearClick = { /*TODO*/ }
+            onClearClick = {
+                actions.onPasswordChanged(null)
+            },
+            isSecret = true,
+            textError = errors?.passwordError
         )
 
         Button(modifier = Modifier.fillMaxWidth(0.8F),
             colors = ButtonDefaults.buttonColors(containerColor = bookarooPrimaryColor),
-            onClick = { /*TODO*/ }) {
+            onClick = onPrimaryButtonClick) {
             primaryButtonText()
         }
         Text(hintText, color = getTintAltColor())

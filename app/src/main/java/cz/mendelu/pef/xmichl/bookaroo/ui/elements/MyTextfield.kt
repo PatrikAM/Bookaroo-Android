@@ -67,7 +67,7 @@ fun MyTextfield(
                 focusManager.clearFocus()
             }
         }),
-        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        visualTransformation = if (passwordVisible || !isSecret) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             if (isSecret) {
                 val image = if (passwordVisible)

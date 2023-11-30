@@ -1,7 +1,11 @@
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+
+    // ProtoDataStore
+//    id("com.google.protobuf")
 
     // For Hilt
     kotlin("kapt")
@@ -37,6 +41,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -48,6 +53,7 @@ android {
     buildFeatures {
         compose = true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
     }
@@ -58,7 +64,30 @@ android {
     }
 }
 
+//protobuf {
+//    protoc {
+//        artifact = "com.google.protobuf:protoc:3.14.0"
+//    }
+//
+//    generateProtoTasks {
+//        all().forEach { task ->
+//            task.builtins {
+//                java {
+//                    option("lite")
+//                }
+//            }
+//        }
+//    }
+//}
+
 dependencies {
+    // DataStore
+    implementation("androidx.datastore:datastore-core:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    // ProtoDataStore
+//    implementation("androidx.datastore:datastore:1.0.0")
+//    implementation("com.google.protobuf:protobuf-javalite:3.18.0")
 
     // Icons
     implementation("androidx.compose.material:material-icons-extended:1.4.2")
@@ -123,6 +152,7 @@ dependencies {
 
 
 }
+
 // For Hilt
 kapt {
     correctErrorTypes = true

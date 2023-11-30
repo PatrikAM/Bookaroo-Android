@@ -1,9 +1,8 @@
-package cz.mendelu.pef.xmichl.bookaroo.ui.screens.listOfLibraries
+package cz.mendelu.pef.xmichl.bookaroo.ui.screens.listOfBooks
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -19,27 +18,26 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import cz.mendelu.pef.xmichl.bookaroo.R
-import cz.mendelu.pef.xmichl.bookaroo.model.Library
+import cz.mendelu.pef.xmichl.bookaroo.model.Book
 import cz.mendelu.pef.xmichl.bookaroo.model.UiState
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BaseScreen
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BookarooBigCard
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.AddEditLibraryScreenDestination
-import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfLibrariesScreenDestination
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfBooksScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintColor
 
-@Destination(route = "libraries")
+@Destination(route = "books")
 @Composable
-fun ListOfLibrariesScreen(
+fun ListOfBooksScreen(
     navigator: DestinationsNavigator
 ) {
-    val viewModel = hiltViewModel<ListOfLibrariesViewModel>()
+    val viewModel = hiltViewModel<ListOfBooksViewModel>()
 
-    val uiState: MutableState<UiState<List<Library>, ListOfLibrariesErrors>> =
+    val uiState: MutableState<UiState<List<Book>, ListOfBooksErrors>> =
         rememberSaveable {
             mutableStateOf(UiState())
         }
@@ -53,7 +51,7 @@ fun ListOfLibrariesScreen(
 
 
     BaseScreen(
-        topBarText = stringResource(R.string.libraries),
+        topBarText = stringResource(R.string.books),
         drawFullScreenContent = viewModel.uiState.value.loading,
         showLoading = false,
 //        placeholderScreenContent = if (uiState.value.errors != null) {
@@ -88,7 +86,7 @@ fun ListOfLibrariesScreen(
         },
 
         navigator = navigator,
-        currentRoute = ListOfLibrariesScreenDestination.route,
+        currentRoute = ListOfBooksScreenDestination.route,
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 navigator.navigate(AddEditLibraryScreenDestination())
@@ -103,7 +101,7 @@ fun ListOfLibrariesScreen(
         isNavScreen = true,
 
         ) {
-        ListOfLibrariesScreenContent(
+        ListOfBooksScreenContent(
             paddingValues = it,
             uiState = uiState.value,
             onRowClick = {
@@ -114,9 +112,9 @@ fun ListOfLibrariesScreen(
 }
 
 @Composable
-fun ListOfLibrariesScreenContent(
+fun ListOfBooksScreenContent(
     paddingValues: PaddingValues,
-    uiState: UiState<List<Library>, ListOfLibrariesErrors>,
+    uiState: UiState<List<Book>, ListOfBooksErrors>,
     onRowClick: (id: String) -> Unit
 ) {
     LazyColumn(
@@ -128,25 +126,25 @@ fun ListOfLibrariesScreenContent(
         uiState.data?.forEach {
 
             item {
-                BookarooBigCard(
-                    title = it.name ?: "",
-                    subtitle = "",
-//                    subtitle = it.ownerId.toString() ?: "",
-                    modifier = Modifier
-                        .size(width = 320.dp, height = 170.dp)
-                        .fillParentMaxWidth(0.9f)
-                        .padding(all = 10.dp),
-//                    imageHeight = 120.dp,
-//                    imageWidth = 100.dp,
-                    slots = mapOf(
-                        stringResource(R.string.total) to it.total.toString(),
-                        stringResource(R.string.favourite) to it.favouriteCount.toString(),
-                        stringResource(R.string.read) to it.readCount.toString()
-                    ),
-                    onCardClick = {
-                        onRowClick(it.id)
-                    }
-                )
+//                BookarooBigCard(
+//                    title = it.name ?: "",
+//                    subtitle = "",
+////                    subtitle = it.ownerId.toString() ?: "",
+//                    modifier = Modifier
+//                        .size(width = 320.dp, height = 170.dp)
+//                        .fillParentMaxWidth(0.9f)
+//                        .padding(all = 10.dp),
+////                    imageHeight = 120.dp,
+////                    imageWidth = 100.dp,
+//                    slots = mapOf(
+//                        stringResource(R.string.total) to it.total.toString(),
+//                        stringResource(R.string.favourite) to it.favouriteCount.toString(),
+//                        stringResource(R.string.read) to it.readCount.toString()
+//                    ),
+//                    onCardClick = {
+//                        onRowClick(it.id)
+//                    }
+//                )
             }
         }
     }

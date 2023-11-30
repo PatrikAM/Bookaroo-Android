@@ -6,4 +6,6 @@ interface RegisterScreenActions {
         password: String,
         name: String
     )
+
+    fun onUsernameChanged(username: String?)
 }

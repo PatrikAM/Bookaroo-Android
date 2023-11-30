@@ -1,8 +1,10 @@
 package cz.mendelu.pef.xmichl.bookaroo.communication.reader
 
+import android.util.Log
 import cz.mendelu.pef.xmichl.bookaroo.architecture.CommunicationResult
 import cz.mendelu.pef.xmichl.bookaroo.architecture.IBaseRemoteRepository
 import cz.mendelu.pef.xmichl.bookaroo.model.BookarooApiResponse
+import cz.mendelu.pef.xmichl.bookaroo.model.Reader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -10,14 +12,14 @@ import javax.inject.Inject
 class ReaderRemoteRepositoryImpl @Inject constructor(private val readerApi: ReaderApi)
     : IBaseRemoteRepository, IReaderRemoteRepository {
 
-    override suspend fun login(login: String, password: String): CommunicationResult<BookarooApiResponse> {
+    override suspend fun login(login: String, password: String): CommunicationResult<Reader> {
         val response = withContext(Dispatchers.IO) {
             readerApi.login(login = login, password = password)
         }
         return processResponse(response)
     }
 
-    override suspend fun register(login: String, password: String, name: String): CommunicationResult<BookarooApiResponse> {
+    override suspend fun register(login: String, password: String, name: String): CommunicationResult<Reader> {
         val response = withContext(Dispatchers.IO) {
             readerApi.register(login = login, password = password, name = name)
         }

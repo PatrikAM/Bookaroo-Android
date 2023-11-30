@@ -5,9 +5,9 @@ import org.mongodb.kbson.ObjectId
 
 @JsonClass(generateAdapter = true)
 data class Library(
-    var id: ObjectId,
+    var id: String,
     var name: String?,
-    var ownerId: ObjectId,
+    var ownerId: String?,
     var favouriteCount: Int? = 0,
     var total: Int? = 0,
     var readCount: Int? = 0
