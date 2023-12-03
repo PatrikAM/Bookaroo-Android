@@ -1,52 +1,52 @@
-package cz.mendelu.pef.xmichl.bookaroo.ui.screens.listOfLibraries
+package cz.mendelu.pef.xmichl.bookaroo.ui.screens.bookAddEdit
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import cz.mendelu.pef.xmichl.bookaroo.R
 import cz.mendelu.pef.xmichl.bookaroo.architecture.BaseViewModel
 import cz.mendelu.pef.xmichl.bookaroo.architecture.CommunicationResult
-import cz.mendelu.pef.xmichl.bookaroo.communication.library.ILibraryRemoteRepository
-import cz.mendelu.pef.xmichl.bookaroo.model.Library
+import cz.mendelu.pef.xmichl.bookaroo.communication.book.IBookRemoteRepository
+import cz.mendelu.pef.xmichl.bookaroo.model.Book
 import cz.mendelu.pef.xmichl.bookaroo.model.UiState
-import cz.mendelu.pef.xmichl.bookaroo.ui.screens.root.BookarooRootData
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.bookDetail.BookErrors
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ListOfLibrariesViewModel
+class BookAddEditViewModel
 @Inject constructor(
-    private val repository: ILibraryRemoteRepository,
-) : BaseViewModel(), IListOfLibrariesActions {
+    private val repository: IBookRemoteRepository,
+    savedStateHandle: SavedStateHandle
+) : BaseViewModel(), BookAddEditActions {
 
-    val uiState: MutableState<UiState<List<Library>, ListOfLibrariesErrors>> =
+
+    private val bookId: String? =
+            savedStateHandle.get<String>("bookId")
+
+    val uiState: MutableState<UiState<Book, BookErrors>> =
         mutableStateOf(UiState())
 
-    val data: BookarooRootData = BookarooRootData()
-
     init {
-        fetchLibraries()
-    }
-
-    fun refreshLibraries() {
         uiState.value = UiState(
-            loading = true,
-            data = null,
+            loading = false,
+            data = Book(),
             errors = null
         )
-        fetchLibraries()
     }
 
 
-    override fun fetchLibraries() {
+    override fun saveBook() {
         launch {
             when (val result =
-                repository.fetchLibraries() ) {
+                repository.createBook(uiState.value.data!!)
+            ) {
                 is CommunicationResult.CommunicationError -> {
                     uiState.value = UiState(
                         loading = false,
                         data = null,
-                        errors = ListOfLibrariesErrors(R.string.no_internet_connection)
+                        errors = BookErrors(R.string.no_internet_connection)
                     )
                 }
 
@@ -54,7 +54,7 @@ class ListOfLibrariesViewModel
                     uiState.value = UiState(
                         loading = false,
                         data = null,
-                        errors = ListOfLibrariesErrors(R.string.failed_to_log_in)
+                        errors = BookErrors(R.string.failed_to_fetch_this_book)
                     )
                 }
 
@@ -62,7 +62,7 @@ class ListOfLibrariesViewModel
                     uiState.value = UiState(
                         loading = false,
                         data = null,
-                        errors = ListOfLibrariesErrors(R.string.unknown_error)
+                        errors = BookErrors(R.string.unknown_error)
                     )
                 }
 
@@ -75,6 +75,22 @@ class ListOfLibrariesViewModel
                 }
             }
         }
+    }
+
+    override fun onTitleChanged(title: String?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSubTitleChanged(subTitle: String?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onAuthorChanged(title: String?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onLibraryChanged(library: String?) {
+        TODO("Not yet implemented")
     }
 
 }

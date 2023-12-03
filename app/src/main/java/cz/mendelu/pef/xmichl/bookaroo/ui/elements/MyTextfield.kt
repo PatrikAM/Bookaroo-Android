@@ -1,6 +1,7 @@
 package cz.mendelu.pef.xmichl.bookaroo.ui.elements
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -36,9 +37,9 @@ import cz.mendelu.pef.xmichl.bookaroo.ui.theme.basicMargin
 fun MyTextfield(
     value: String,
     onValueChange: (String) -> Unit,
-    leadingIcon: ImageVector,
+    leadingIcon: ImageVector? = null,
     label: String,
-    singleLine: Boolean = false,
+    singleLine: Boolean = true,
     onClearClick: () -> Unit,
     charLimit: Int? = null,
     textError: Int? = null,
@@ -92,12 +93,15 @@ fun MyTextfield(
             }
         },
         singleLine = singleLine,
-        leadingIcon = {
-            Icon(
-                imageVector = leadingIcon,
-                contentDescription = null
-            )
-        },
+        leadingIcon =
+        if (leadingIcon != null) {
+            {
+                Icon(
+                    imageVector = leadingIcon,
+                    contentDescription = null
+                )
+            }
+        } else null,
         label = {
             Text(text = label)
         },
@@ -121,7 +125,7 @@ fun MyTextfield(
             }
         },
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(bottom = basicMargin())
     )
 }

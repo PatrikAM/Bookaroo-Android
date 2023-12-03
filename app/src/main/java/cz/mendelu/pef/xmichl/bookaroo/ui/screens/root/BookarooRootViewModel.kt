@@ -1,10 +1,9 @@
-package cz.mendelu.pef.xmichl.bookaroo.ui.screens.switcher
+package cz.mendelu.pef.xmichl.bookaroo.ui.screens.root
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import cz.mendelu.pef.xmichl.bookaroo.architecture.BaseViewModel
 import cz.mendelu.pef.xmichl.bookaroo.datastore.DataStoreRepositoryImpl
-import cz.mendelu.pef.xmichl.bookaroo.model.Reader
 import cz.mendelu.pef.xmichl.bookaroo.model.UiState
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.login.LoginErrors
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,21 +1,16 @@
-package cz.mendelu.pef.xmichl.bookaroo.ui.screens.switcher
+package cz.mendelu.pef.xmichl.bookaroo.ui.screens.root
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import cz.mendelu.pef.xmichl.bookaroo.model.Reader
 import cz.mendelu.pef.xmichl.bookaroo.model.UiState
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfLibrariesScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.LoginScreenDestination
-import cz.mendelu.pef.xmichl.bookaroo.ui.screens.login.LoginData
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.login.LoginErrors
-import cz.mendelu.pef.xmichl.bookaroo.ui.screens.login.SignInUpViewModel
 
 
 @Destination(start = true, route = "switcher")

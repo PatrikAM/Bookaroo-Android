@@ -55,4 +55,9 @@ class BookRemoteRepositoryImpl @Inject constructor(
         }
         return processResponse(response)
     }
+
+    override suspend fun updateBook(book: Book)
+    : CommunicationResult<Book> {
+        TODO("Not yet implemented")
+    }
 }

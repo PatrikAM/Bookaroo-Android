@@ -32,6 +32,7 @@ import cz.mendelu.pef.xmichl.bookaroo.model.UiState
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BaseScreen
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.ImageOnBlurredImage
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.PlaceholderScreenContent
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.BookAddEditScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfBooksScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintAltColor
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintColor
@@ -81,6 +82,7 @@ fun BookDetailScreen(
             IconButton(
                 onClick = {
 //                    viewModel.logout()
+                    navigator.navigate(BookAddEditScreenDestination(bookId))
                 }
             ) {
                 Icon(

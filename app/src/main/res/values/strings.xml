@@ -25,4 +25,8 @@
     <string name="this_book_does_not_exist">This book does not exist.</string>
     <string name="failed_to_fetch_this_book">Failed to fetch this book.</string>
     <string name="page_count">Page Count</string>
+    <string name="save">Save</string>
+    <string name="title">Title</string>
+    <string name="advanced">Advanced</string>
+    <string name="subtitle">Subtitle</string>
 </resources>

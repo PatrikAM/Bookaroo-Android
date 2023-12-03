@@ -30,6 +30,7 @@ import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BaseScreen
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BookarooSmallCard
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.PlaceholderScreenContent
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.AddEditLibraryScreenDestination
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.BookAddEditScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.BookDetailScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfBooksScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintColor
@@ -102,7 +103,7 @@ fun ListOfBooksScreen(
         currentRoute = ListOfBooksScreenDestination.route,
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                navigator.navigate(AddEditLibraryScreenDestination())
+                navigator.navigate(BookAddEditScreenDestination())
             }) {
                 Icon(
                     imageVector = Icons.Filled.Add,
@@ -150,7 +151,7 @@ fun ListOfBooksScreenContent(
 //                    imageWidth = 100.dp,
                     photo = it.cover ?: "",
                     onCardClick = {
-                        onRowClick(it.id)
+                        onRowClick(it.id!!)
                     }
                 )
             }
