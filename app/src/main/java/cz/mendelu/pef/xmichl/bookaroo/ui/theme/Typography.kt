@@ -5,3 +5,6 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun basicTextStyle() = MaterialTheme.typography.bodyMedium
+
+@Composable
+fun headLine() = MaterialTheme.typography.titleLarge

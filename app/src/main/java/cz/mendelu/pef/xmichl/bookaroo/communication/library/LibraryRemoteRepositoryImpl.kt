@@ -17,9 +17,11 @@ class LibraryRemoteRepositoryImpl @Inject constructor(
             : CommunicationResult<List<Library>> {
         val response = withContext(Dispatchers.IO) {
             librariesApi.fetchLibraries(dataStoreRepository.getUserToken()!!)
-//            librariesApi.fetchLibraries("")
         }
         return processResponse(response)
+//        return processResponse {
+//                librariesApi.fetchLibraries(dataStoreRepository.getUserToken()!!)
+//        }
     }
 
     override suspend fun createLibrary(library: Library)

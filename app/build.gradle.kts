@@ -85,6 +85,9 @@ dependencies {
     implementation("androidx.datastore:datastore-core:1.0.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.2.2")
+
     // ProtoDataStore
 //    implementation("androidx.datastore:datastore:1.0.0")
 //    implementation("com.google.protobuf:protobuf-javalite:3.18.0")

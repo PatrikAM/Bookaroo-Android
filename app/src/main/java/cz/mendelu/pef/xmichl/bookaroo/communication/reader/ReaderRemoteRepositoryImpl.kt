@@ -1,6 +1,5 @@
 package cz.mendelu.pef.xmichl.bookaroo.communication.reader
 
-import android.util.Log
 import cz.mendelu.pef.xmichl.bookaroo.architecture.CommunicationResult
 import cz.mendelu.pef.xmichl.bookaroo.architecture.IBaseRemoteRepository
 import cz.mendelu.pef.xmichl.bookaroo.model.BookarooApiResponse

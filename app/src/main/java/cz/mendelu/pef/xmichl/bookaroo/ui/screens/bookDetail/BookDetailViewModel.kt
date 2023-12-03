@@ -1,6 +1,5 @@
-package cz.mendelu.pef.xmichl.bookaroo.ui.screens.listOfBooks
+package cz.mendelu.pef.xmichl.bookaroo.ui.screens.bookDetail
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
@@ -15,49 +14,43 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ListOfBooksViewModel
+class BookDetailViewModel
 @Inject constructor(
     private val repository: IBookRemoteRepository,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel(), IListOfBooksActions {
+) : BaseViewModel(), BookActions {
 
 
-    private val libraryId: String? =
-        if (savedStateHandle.contains("libraryId")) {
-            savedStateHandle.get<String>("libraryId")
-        } else null
+    private val libraryId: String =
+            savedStateHandle.get<String>("bookId")!!
 
-    val uiState: MutableState<UiState<List<Book>, ListOfBooksErrors>> =
+    val uiState: MutableState<UiState<Book, BookErrors>> =
         mutableStateOf(UiState())
 
     init {
-        fetchBooks()
+        fetchBook()
     }
 
-    fun refreshBooks() {
+    fun refreshBook() {
         uiState.value = UiState(
             loading = true,
             data = null,
             errors = null
         )
-        fetchBooks()
+        fetchBook()
     }
 
 
-    override fun fetchBooks() {
+    override fun fetchBook() {
         launch {
             when (val result =
-                if (libraryId == null) {
-                    repository.fetchBooks()
-                } else {
-                    repository.fetchBooksFromLibrary(libraryId)
-                }
+                repository.fetchBook(libraryId)
             ) {
                 is CommunicationResult.CommunicationError -> {
                     uiState.value = UiState(
                         loading = false,
                         data = null,
-                        errors = ListOfBooksErrors(R.string.no_internet_connection)
+                        errors = BookErrors(R.string.no_internet_connection)
                     )
                 }
 
@@ -65,7 +58,7 @@ class ListOfBooksViewModel
                     uiState.value = UiState(
                         loading = false,
                         data = null,
-                        errors = ListOfBooksErrors(R.string.failed_to_log_in)
+                        errors = BookErrors(R.string.failed_to_fetch_this_book)
                     )
                 }
 
@@ -73,7 +66,7 @@ class ListOfBooksViewModel
                     uiState.value = UiState(
                         loading = false,
                         data = null,
-                        errors = ListOfBooksErrors(R.string.unknown_error)
+                        errors = BookErrors(R.string.unknown_error)
                     )
                 }
 

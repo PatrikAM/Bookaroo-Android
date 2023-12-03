@@ -45,12 +45,13 @@ fun BaseScreen(
 ) {
 
     Scaffold(
-        contentColor = getBackgroundColor(),
+        contentColor = getTintColor(),
         containerColor = getBackgroundColor(),
         floatingActionButton = floatingActionButton,
         topBar = {
             if (topBarText != null) {
                 TopAppBar(
+                    colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = getBackgroundColor()),
                     title = {
                         Row(
                             modifier = Modifier

@@ -1,6 +1,9 @@
 package cz.mendelu.pef.xmichl.bookaroo.di
 
 import android.content.Context
+import cz.mendelu.pef.xmichl.bookaroo.communication.book.BookRemoteRepositoryImpl
+import cz.mendelu.pef.xmichl.bookaroo.communication.book.BooksApi
+import cz.mendelu.pef.xmichl.bookaroo.communication.book.IBookRemoteRepository
 import cz.mendelu.pef.xmichl.bookaroo.communication.library.ILibraryRemoteRepository
 import cz.mendelu.pef.xmichl.bookaroo.communication.library.LibrariesApi
 import cz.mendelu.pef.xmichl.bookaroo.communication.library.LibraryRemoteRepositoryImpl
@@ -30,7 +33,14 @@ object RemoteRepositoryModule {
         librariesApi: LibrariesApi,
         dataStoreRepository: DataStoreRepositoryImpl
     ): ILibraryRemoteRepository
-//            = LibraryRemoteRepositoryImpl(librariesApi)
             = LibraryRemoteRepositoryImpl(librariesApi, dataStoreRepository)
+
+    @Provides
+    @Singleton
+    fun provideBookRepository(
+        booksApi: BooksApi,
+        dataStoreRepository: DataStoreRepositoryImpl
+    ): IBookRemoteRepository
+            = BookRemoteRepositoryImpl(booksApi, dataStoreRepository)
 
 }

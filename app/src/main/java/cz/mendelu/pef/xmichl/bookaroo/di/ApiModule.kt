@@ -1,5 +1,6 @@
 package cz.mendelu.pef.xmichl.bookaroo.di
 
+import cz.mendelu.pef.xmichl.bookaroo.communication.book.BooksApi
 import cz.mendelu.pef.xmichl.bookaroo.communication.library.LibrariesApi
 import cz.mendelu.pef.xmichl.bookaroo.communication.reader.ReaderApi
 import dagger.Module
@@ -23,5 +24,10 @@ object ApiModule {
     @Singleton
     fun provideLibrariesApi(retrofit: Retrofit): LibrariesApi
             = retrofit.create(LibrariesApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideBooksApi(retrofit: Retrofit): BooksApi
+            = retrofit.create(BooksApi::class.java)
 
 }

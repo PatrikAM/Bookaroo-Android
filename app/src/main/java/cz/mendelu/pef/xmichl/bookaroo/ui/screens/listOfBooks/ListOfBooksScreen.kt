@@ -3,6 +3,7 @@ package cz.mendelu.pef.xmichl.bookaroo.ui.screens.listOfBooks
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -18,6 +19,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -25,15 +27,18 @@ import cz.mendelu.pef.xmichl.bookaroo.R
 import cz.mendelu.pef.xmichl.bookaroo.model.Book
 import cz.mendelu.pef.xmichl.bookaroo.model.UiState
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BaseScreen
-import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BookarooBigCard
+import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BookarooSmallCard
+import cz.mendelu.pef.xmichl.bookaroo.ui.elements.PlaceholderScreenContent
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.AddEditLibraryScreenDestination
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.BookDetailScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfBooksScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintColor
 
 @Destination(route = "books")
 @Composable
 fun ListOfBooksScreen(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
+    libraryId: String? = null
 ) {
     val viewModel = hiltViewModel<ListOfBooksViewModel>()
 
@@ -42,29 +47,37 @@ fun ListOfBooksScreen(
             mutableStateOf(UiState())
         }
 
-
     viewModel.uiState.value.let {
         uiState.value = it
     }
 
-//    uiState.value.data = libraryList
-
-
     BaseScreen(
         topBarText = stringResource(R.string.books),
-        drawFullScreenContent = viewModel.uiState.value.loading,
-        showLoading = false,
-//        placeholderScreenContent = if (uiState.value.errors != null) {
-//            PlaceholderScreenContent(
-//                image = R.drawable.error_placeholder,
-//                text = stringResource(id = uiState.value.errors!!.communicationError)
-//            )
-//        } else {
-//            null
-//        },
+        onBackClick =
+        if (libraryId != null) {
+            { navigator.navigateUp() }
+        } else null,
+        drawFullScreenContent = true,
+        showLoading = uiState.value.loading,
+        placeholderScreenContent = if (uiState.value.errors != null &&
+            !uiState.value.loading) {
+            PlaceholderScreenContent(
+                image = R.drawable.bookaroo,
+                text = stringResource(id = uiState.value.errors!!.communicationError)
+            )
+        } else if (
+            uiState.value.data != null &&
+            uiState.value.data!!.isEmpty() &&
+            !uiState.value.loading
+        ) {
+            PlaceholderScreenContent(
+                image = R.drawable.ic_book_lover,
+                text = stringResource(id = R.string.there_are_no_books)
+            )
+        } else null,
         actions = {
             IconButton(onClick = {
-                viewModel.refreshLibraries()
+                viewModel.refreshBooks()
             }) {
                 Icon(
                     imageVector = Icons.Rounded.Refresh,
@@ -98,14 +111,14 @@ fun ListOfBooksScreen(
                 )
             }
         },
-        isNavScreen = true,
+        isNavScreen = libraryId == null,
 
         ) {
         ListOfBooksScreenContent(
             paddingValues = it,
             uiState = uiState.value,
             onRowClick = {
-//                navigator.navigate(LisOfBooksDestination())
+                navigator.navigate(BookDetailScreenDestination(it))
             }
         )
     }
@@ -126,25 +139,20 @@ fun ListOfBooksScreenContent(
         uiState.data?.forEach {
 
             item {
-//                BookarooBigCard(
-//                    title = it.name ?: "",
-//                    subtitle = "",
-////                    subtitle = it.ownerId.toString() ?: "",
-//                    modifier = Modifier
-//                        .size(width = 320.dp, height = 170.dp)
-//                        .fillParentMaxWidth(0.9f)
-//                        .padding(all = 10.dp),
-////                    imageHeight = 120.dp,
-////                    imageWidth = 100.dp,
-//                    slots = mapOf(
-//                        stringResource(R.string.total) to it.total.toString(),
-//                        stringResource(R.string.favourite) to it.favouriteCount.toString(),
-//                        stringResource(R.string.read) to it.readCount.toString()
-//                    ),
-//                    onCardClick = {
-//                        onRowClick(it.id)
-//                    }
-//                )
+                BookarooSmallCard(
+                    title = it.title ?: "",
+                    subtitle = it.author,
+                    modifier = Modifier
+                        .size(width = 320.dp, height = 170.dp)
+                        .fillParentMaxWidth(0.9f)
+                        .padding(all = 10.dp),
+//                    imageHeight = 120.dp,
+//                    imageWidth = 100.dp,
+                    photo = it.cover ?: "",
+                    onCardClick = {
+                        onRowClick(it.id)
+                    }
+                )
             }
         }
     }

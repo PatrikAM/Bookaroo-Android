@@ -69,7 +69,7 @@ class ListOfLibrariesViewModel
 
                 is CommunicationResult.Success -> {
                     uiState.value = UiState(
-                        loading = true,
+                        loading = false,
                         data = result.data,
                         errors = null
                     )

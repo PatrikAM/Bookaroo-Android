@@ -28,7 +28,9 @@ import cz.mendelu.pef.xmichl.bookaroo.model.Library
 import cz.mendelu.pef.xmichl.bookaroo.model.UiState
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BaseScreen
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BookarooBigCard
+import cz.mendelu.pef.xmichl.bookaroo.ui.elements.PlaceholderScreenContent
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.AddEditLibraryScreenDestination
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfBooksScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfLibrariesScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintColor
 
@@ -54,16 +56,24 @@ fun ListOfLibrariesScreen(
 
     BaseScreen(
         topBarText = stringResource(R.string.libraries),
-        drawFullScreenContent = viewModel.uiState.value.loading,
-        showLoading = false,
-//        placeholderScreenContent = if (uiState.value.errors != null) {
-//            PlaceholderScreenContent(
-//                image = R.drawable.error_placeholder,
-//                text = stringResource(id = uiState.value.errors!!.communicationError)
-//            )
-//        } else {
-//            null
-//        },
+        drawFullScreenContent = true,
+        showLoading = viewModel.uiState.value.loading,
+        placeholderScreenContent = if (uiState.value.errors != null &&
+            !uiState.value.loading) {
+            PlaceholderScreenContent(
+                image = R.drawable.bookaroo,
+                text = stringResource(id = uiState.value.errors!!.communicationError)
+            )
+        } else if (
+            uiState.value.data != null &&
+            uiState.value.data!!.isEmpty() &&
+            !uiState.value.loading
+        ) {
+            PlaceholderScreenContent(
+                image = R.drawable.ic_bookshelves,
+                text = stringResource(R.string.there_are_no_libraries_yet)
+            )
+        } else null,
         actions = {
             IconButton(onClick = {
                 viewModel.refreshLibraries()
@@ -89,25 +99,25 @@ fun ListOfLibrariesScreen(
 
         navigator = navigator,
         currentRoute = ListOfLibrariesScreenDestination.route,
-        floatingActionButton = {
-            FloatingActionButton(onClick = {
-                navigator.navigate(AddEditLibraryScreenDestination())
-            }) {
-                Icon(
-                    imageVector = Icons.Filled.Add,
-                    contentDescription = null,
-                    tint = getTintColor()
-                )
-            }
-        },
+//        floatingActionButton = {
+//            FloatingActionButton(onClick = {
+//                navigator.navigate(AddEditLibraryScreenDestination())
+//            }) {
+//                Icon(
+//                    imageVector = Icons.Filled.Add,
+//                    contentDescription = null,
+//                    tint = getTintColor()
+//                )
+//            }
+//        },
         isNavScreen = true,
 
         ) {
         ListOfLibrariesScreenContent(
             paddingValues = it,
             uiState = uiState.value,
-            onRowClick = {
-//                navigator.navigate(LisOfBooksDestination())
+            onRowClick = { libId ->
+                navigator.navigate(ListOfBooksScreenDestination(libId))
             }
         )
     }
@@ -140,8 +150,8 @@ fun ListOfLibrariesScreenContent(
 //                    imageWidth = 100.dp,
                     slots = mapOf(
                         stringResource(R.string.total) to it.total.toString(),
-                        stringResource(R.string.favourite) to it.favouriteCount.toString(),
-                        stringResource(R.string.read) to it.readCount.toString()
+                        stringResource(R.string.favourite) to it.favourite.toString(),
+                        stringResource(R.string.read) to it.read.toString()
                     ),
                     onCardClick = {
                         onRowClick(it.id)

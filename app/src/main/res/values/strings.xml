@@ -18,4 +18,11 @@
     <string name="failed_to_log_in">Failed to log in</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="unknown_error">Something went wrong</string>
+    <string name="there_are_no_books">There are no books.</string>
+    <string name="there_are_no_libraries_yet">There are no libraries yet.</string>
+    <string name="unknown">Unknown</string>
+    <string name="author">author</string>
+    <string name="this_book_does_not_exist">This book does not exist.</string>
+    <string name="failed_to_fetch_this_book">Failed to fetch this book.</string>
+    <string name="page_count">Page Count</string>
 </resources>
