@@ -61,7 +61,7 @@ fun ListOfLibrariesScreen(
         placeholderScreenContent = if (uiState.value.errors != null &&
             !uiState.value.loading) {
             PlaceholderScreenContent(
-                image = R.drawable.bookaroo,
+                image = uiState.value.image ?: R.drawable.bookaroo,
                 text = stringResource(id = uiState.value.errors!!.communicationError)
             )
         } else if (

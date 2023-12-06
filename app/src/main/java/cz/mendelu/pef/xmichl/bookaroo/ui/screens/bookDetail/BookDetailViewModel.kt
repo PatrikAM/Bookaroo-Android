@@ -50,7 +50,8 @@ class BookDetailViewModel
                     uiState.value = UiState(
                         loading = false,
                         data = null,
-                        errors = BookErrors(R.string.no_internet_connection)
+                        errors = BookErrors(R.string.no_internet_connection),
+                        image = R.drawable.ic_connection
                     )
                 }
 

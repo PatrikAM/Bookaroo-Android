@@ -57,7 +57,8 @@ class ListOfBooksViewModel
                     uiState.value = UiState(
                         loading = false,
                         data = null,
-                        errors = ListOfBooksErrors(R.string.no_internet_connection)
+                        errors = ListOfBooksErrors(R.string.no_internet_connection),
+                        image = R.drawable.ic_connection
                     )
                 }
 

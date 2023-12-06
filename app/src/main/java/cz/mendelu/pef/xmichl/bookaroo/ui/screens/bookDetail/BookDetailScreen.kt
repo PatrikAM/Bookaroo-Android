@@ -61,11 +61,12 @@ fun BookDetailScreen(
         onBackClick = { navigator.navigateUp() },
         drawFullScreenContent = true,
         showLoading = uiState.value.loading,
-        placeholderScreenContent = if (uiState.value.errors != null &&
+        placeholderScreenContent = if (
+            uiState.value.errors != null &&
             !uiState.value.loading
         ) {
             PlaceholderScreenContent(
-                image = R.drawable.ic_book_lover,
+                image = uiState.value.image ?: R.drawable.ic_book_lover,
                 text = stringResource(id = uiState.value.errors!!.communicationError)
             )
         } else null,

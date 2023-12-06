@@ -20,7 +20,8 @@ data class PlaceholderScreenContent(val image: Int?,
 @Composable
 fun PlaceHolderScreen(
     modifier: Modifier,
-    content: PlaceholderScreenContent){
+    content: PlaceholderScreenContent
+){
     Box(modifier = modifier.fillMaxSize()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

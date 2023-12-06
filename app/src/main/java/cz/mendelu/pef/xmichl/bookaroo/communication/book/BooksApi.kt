@@ -11,7 +11,7 @@ interface BooksApi {
     @POST("book")
     suspend fun createBook(
         @Query("book") book: Book,
-        userToken: String
+        @Query("token") userToken: String
     ) : Response<Book>
 
     @GET("book/all_books")

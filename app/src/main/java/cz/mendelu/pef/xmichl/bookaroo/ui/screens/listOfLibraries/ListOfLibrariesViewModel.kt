@@ -46,7 +46,8 @@ class ListOfLibrariesViewModel
                     uiState.value = UiState(
                         loading = false,
                         data = null,
-                        errors = ListOfLibrariesErrors(R.string.no_internet_connection)
+                        errors = ListOfLibrariesErrors(R.string.no_internet_connection),
+                        image = R.drawable.ic_connection
                     )
                 }
 
