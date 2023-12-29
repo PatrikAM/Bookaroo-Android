@@ -10,6 +10,16 @@ interface BookAddEditActions {
 
     fun onLibraryChanged(library: String?)
 
+    fun onNewLibrary(library: String)
+    fun onPublisherChanged(publisher: String?)
+
+    fun onPublishedChanged(published: String?)
+
     fun saveBook()
+    fun onPagesChanged(pages: String?)
+    fun onCoverChanged(cover: String?)
+    fun onISBNChanged(isbn: String?)
+
+    fun onDialogDismiss()
 
 }

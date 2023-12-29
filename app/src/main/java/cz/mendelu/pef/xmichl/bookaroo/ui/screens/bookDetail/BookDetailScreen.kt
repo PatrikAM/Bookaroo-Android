@@ -10,12 +10,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -42,7 +44,7 @@ import cz.mendelu.pef.xmichl.bookaroo.ui.theme.headLine
 @Composable
 fun BookDetailScreen(
     navigator: DestinationsNavigator,
-    bookId: String
+    bookId: String,
 ) {
 
     val viewModel = hiltViewModel<BookDetailViewModel>()
@@ -54,6 +56,14 @@ fun BookDetailScreen(
 
     viewModel.uiState.value.let {
         uiState.value = it
+    }
+
+
+
+    if (uiState.value.actionDone) {
+        LaunchedEffect(uiState.value.actionDone) {
+            navigator.popBackStack()
+        }
     }
 
     BaseScreen(
@@ -76,6 +86,15 @@ fun BookDetailScreen(
             }) {
                 Icon(
                     imageVector = Icons.Rounded.Refresh,
+                    contentDescription = null,
+                    tint = getTintColor()
+                )
+            }
+            IconButton(onClick = {
+                viewModel.deleteBook()
+            }) {
+                Icon(
+                    imageVector = Icons.Rounded.Delete,
                     contentDescription = null,
                     tint = getTintColor()
                 )
@@ -161,7 +180,7 @@ fun BookDetailScreenContent(
                         text = stringResource(R.string.page_count),
                         color = getTintAltColor()
                     )
-                    Text(text = (data.pageCount ?: 0).toString())
+                    Text(text = (data.pages ?: 0).toString())
                 }
 //            }
             }

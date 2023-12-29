@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -21,11 +22,31 @@ object RetrofitModule {
                 .add(KotlinJsonAdapterFactory())
                 .build()
 
+    @Named("provideRetrofit")
     @Provides
     @Singleton
     fun provideRetrofit(moshi: Moshi): Retrofit
             = Retrofit.Builder()
-        .baseUrl("http://10.0.2.2:8000/")
+        .baseUrl("https://23b0-89-248-248-109.ngrok-free.app")
+//        .baseUrl("http://10.0.2.2:8000/")
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .build()
+
+    @Named("provideRetrofitPlaces")
+    @Provides
+    @Singleton
+    fun provideRetrofitPlaces(moshi: Moshi): Retrofit
+            = Retrofit.Builder()
+        .baseUrl("https://maps.googleapis.com/maps/api/place/textsearch/json/")
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .build()
+
+    @Named("provideRetrofitGBooks")
+    @Provides
+    @Singleton
+    fun provideRetrofitGBooks(moshi: Moshi): Retrofit
+            = Retrofit.Builder()
+        .baseUrl("https://www.googleapis.com/books/v1/")
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 }

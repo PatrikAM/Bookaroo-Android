@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:name=".BookarooApplication"
@@ -16,6 +19,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Bookaroo"
         tools:targetApi="31">
+<!--        <meta-data-->
+<!--            android:name="com.google.android.geo.API_KEY"-->
+<!--            android:value="AIzaSyC0OTiwAcTtmI7rCH90N2m0IhR7Lk5RIRA" />-->
+
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="" />
+
+
         <activity
             android:name=".ui.activities.MainActivity"
             android:exported="true"

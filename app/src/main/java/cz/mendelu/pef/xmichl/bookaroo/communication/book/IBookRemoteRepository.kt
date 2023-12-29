@@ -15,4 +15,6 @@ interface IBookRemoteRepository {
 
     suspend fun updateBook(book: Book): CommunicationResult<Book>
 
+    suspend fun deleteBook(bookId: String): CommunicationResult<Book>
+
 }

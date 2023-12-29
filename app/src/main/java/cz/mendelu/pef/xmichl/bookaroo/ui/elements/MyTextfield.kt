@@ -1,5 +1,6 @@
 package cz.mendelu.pef.xmichl.bookaroo.ui.elements
 
+import android.content.res.Resources.Theme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,7 +44,8 @@ fun MyTextfield(
     onClearClick: () -> Unit,
     charLimit: Int? = null,
     textError: Int? = null,
-    isSecret: Boolean = false
+    isSecret: Boolean = false,
+    isError: (Boolean) -> Boolean = { false }
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -57,6 +59,7 @@ fun MyTextfield(
 
     OutlinedTextField(
         value = value,
+        isError = isError(textError != null),
         onValueChange =
         if ((charLimit != null && value.length <= charLimit) || charLimit == null)
             { it -> if (value.length != charLimit || value.length > it.length) onValueChange(it) }
@@ -108,12 +111,12 @@ fun MyTextfield(
         supportingText = {
             Row {
                 textError?.let {
-                    if (value.isEmpty()) {
+//                    if (value.isEmpty()) {
                         Text(
                             text = stringResource(id = textError),
                             color = Color.Red
                         )
-                    }
+//                    }
                 }
                 charLimit?.let {
                     Text(

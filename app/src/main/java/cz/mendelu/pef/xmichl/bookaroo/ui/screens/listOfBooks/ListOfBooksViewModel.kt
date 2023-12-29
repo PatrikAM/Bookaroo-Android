@@ -1,6 +1,5 @@
 package cz.mendelu.pef.xmichl.bookaroo.ui.screens.listOfBooks
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
@@ -88,5 +87,26 @@ class ListOfBooksViewModel
             }
         }
     }
+
+    override fun onPermissionError() {
+        uiState.value.permissionError = true
+        uiState.value = UiState(
+            loading = uiState.value.loading,
+            data = uiState.value.data,
+            errors = uiState.value.errors,
+            permissionError = uiState.value.permissionError
+        )
+    }
+
+    override fun onPermissionSuccess() {
+        uiState.value.permissionError = false
+        uiState.value = UiState(
+            loading = uiState.value.loading,
+            data = uiState.value.data,
+            errors = uiState.value.errors,
+            permissionError = uiState.value.permissionError
+        )
+    }
+
 
 }

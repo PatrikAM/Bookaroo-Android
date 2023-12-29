@@ -21,7 +21,7 @@ class BookDetailViewModel
 ) : BaseViewModel(), BookActions {
 
 
-    private val libraryId: String =
+    private val bookId: String =
             savedStateHandle.get<String>("bookId")!!
 
     val uiState: MutableState<UiState<Book, BookErrors>> =
@@ -44,7 +44,7 @@ class BookDetailViewModel
     override fun fetchBook() {
         launch {
             when (val result =
-                repository.fetchBook(libraryId)
+                repository.fetchBook(bookId)
             ) {
                 is CommunicationResult.CommunicationError -> {
                     uiState.value = UiState(
@@ -80,6 +80,57 @@ class BookDetailViewModel
                 }
             }
         }
+    }
+
+    override fun deleteBook() {
+        launch {
+            when (val result =
+                repository.deleteBook(bookId)
+            ) {
+                is CommunicationResult.CommunicationError -> {
+                    uiState.value = UiState(
+                        loading = false,
+                        data = null,
+                        errors = BookErrors(R.string.no_internet_connection),
+                        image = R.drawable.ic_connection
+                    )
+                }
+
+                is CommunicationResult.Error -> {
+                    uiState.value = UiState(
+                        loading = false,
+                        data = null,
+                        errors = BookErrors(R.string.failed_to_fetch_this_book)
+                    )
+                }
+
+                is CommunicationResult.Exception -> {
+                    uiState.value = UiState(
+                        loading = false,
+                        data = null,
+                        errors = BookErrors(R.string.unknown_error)
+                    )
+                }
+
+                is CommunicationResult.Success -> {
+                    uiState.value = UiState(
+                        loading = false,
+                        data = result.data,
+                        errors = null,
+                        actionDone = true
+                    )
+                }
+            }
+//            bookChanged()
+        }
+    }
+
+    private fun bookChanged() {
+        uiState.value = UiState(
+            loading = uiState.value.loading,
+            data = uiState.value.data,
+            errors = uiState.value.errors
+        )
     }
 
 }

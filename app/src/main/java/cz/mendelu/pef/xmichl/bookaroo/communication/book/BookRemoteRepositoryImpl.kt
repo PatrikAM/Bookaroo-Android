@@ -68,32 +68,26 @@ class BookRemoteRepositoryImpl @Inject constructor(
 //        return processResponse(response)
         return processResponse {
             booksApi.createBook(
-                book,
+                title = book.title!!,
+                author = book.author!!,
+                library = book.library!!,
+                isbn = book.isbn!!,
                 dataStoreRepository.getUserToken()!!
             )
         }
-    }
-
-    suspend fun createaltBook(book: Book)
-            : CommunicationResult<Book> {
-
-        return processResponse {
-            booksApi.createBook(
-                book,
-                dataStoreRepository.getUserToken()!!
-            )
-        }
-//        val response = withContext(Dispatchers.IO) {
-//            booksApi.createBook(
-//                book,
-//                dataStoreRepository.getUserToken()!!
-//            )
-//        }
-//        return processResponse(response)
     }
 
     override suspend fun updateBook(book: Book)
             : CommunicationResult<Book> {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteBook(bookId: String): CommunicationResult<Book> {
+        return processResponse {
+            booksApi.deleteBook(
+                bookId,
+                dataStoreRepository.getUserToken()!!
+            )
+        }
     }
 }

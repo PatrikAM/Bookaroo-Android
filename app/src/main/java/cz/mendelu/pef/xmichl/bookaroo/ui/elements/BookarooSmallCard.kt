@@ -1,7 +1,6 @@
 package cz.mendelu.pef.xmichl.bookaroo.ui.elements
 
 import android.util.Patterns
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,8 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -105,11 +102,19 @@ fun BookarooSmallCardContent(
                 text = title,
                 style = MaterialTheme.typography.headlineSmall,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(bottom = 6.dp, top = 6.dp, end = 15.dp, start = 15.dp)
+                maxLines = 2,
+                modifier = Modifier
+                    .padding(bottom = 6.dp, top = 6.dp, end = 15.dp, start = 15.dp)
             )
 
 
-            subtitle?.let { st -> Text(text = st, overflow = TextOverflow.Ellipsis) }
+            subtitle?.let { st ->
+                Text(
+                    text = st,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                )
+            }
 //                Row {
 //                    pet.tags?.forEach { tag: Tag ->
 //                        if (tag.name != null) {
@@ -121,7 +126,5 @@ fun BookarooSmallCardContent(
 //                    }
 //                }
         }
-
     }
-
 }

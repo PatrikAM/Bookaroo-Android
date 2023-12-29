@@ -1,6 +1,7 @@
 package cz.mendelu.pef.xmichl.bookaroo.communication.book
 
 import cz.mendelu.pef.xmichl.bookaroo.model.Book
+import cz.mendelu.pef.xmichl.bookaroo.model.Library
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -10,7 +11,10 @@ import retrofit2.http.Query
 interface BooksApi {
     @POST("book")
     suspend fun createBook(
-        @Query("book") book: Book,
+        @Query("title") title: String,
+        @Query("author") author: String,
+        @Query("library") library: String,
+        @Query("isbn") isbn: String,
         @Query("token") userToken: String
     ) : Response<Book>
 
@@ -21,6 +25,12 @@ interface BooksApi {
 
     @GET("book/{book_id}")
     suspend fun fetchBook(
+        @Path("book_id") bookId: String,
+        @Query("token") token: String
+    ) : Response<Book>
+
+    @GET("book/remove_by_id/{book_id}")
+    suspend fun deleteBook(
         @Path("book_id") bookId: String,
         @Query("token") token: String
     ) : Response<Book>

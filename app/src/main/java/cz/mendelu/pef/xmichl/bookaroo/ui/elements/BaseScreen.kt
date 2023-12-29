@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import cz.mendelu.pef.xmichl.bookaroo.R
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.BookShopMapScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfBooksScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfLibrariesScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.basicMargin
@@ -161,7 +162,7 @@ enum class NavItem(val destination: String, @StringRes val title: Int, val icon:
         Icons.Filled.LibraryBooks
     ),
     BookStores(
-        ListOfLibrariesScreenDestination.route,
+        BookShopMapScreenDestination.route,
         R.string.book_stores,
         Icons.Filled.Store
     ),

@@ -7,7 +7,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface LibrariesApi {
-    @POST("library/all_libraries")
+    @POST("library")
     suspend fun createLibrary(
         @Query("name") name: String,
         @Query("token") token: String

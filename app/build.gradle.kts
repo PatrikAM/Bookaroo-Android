@@ -1,4 +1,3 @@
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -153,6 +152,19 @@ dependencies {
 //    implementation("io.realm.kotlin:library-sync:1.11.0") If using Device Sync
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0")
 
+    // Accompanist
+    implementation("com.google.accompanist:accompanist-permissions:0.30.0")
+
+    // ML-Kit
+    implementation("androidx.camera:camera-camera2:1.2.2")
+    implementation("androidx.camera:camera-lifecycle:1.2.2")
+    implementation("androidx.camera:camera-view:1.2.2")
+    implementation("com.google.mlkit:barcode-scanning:17.1.0")
+
+//    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8"))
+    implementation("com.google.android.libraries.places:places:3.3.0")
+
+    implementation("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")
 
 }
 

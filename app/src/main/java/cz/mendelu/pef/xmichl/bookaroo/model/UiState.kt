@@ -6,5 +6,7 @@ open class UiState<T, E>(
     var loading: Boolean = true,
     var data: T? = null,
     var errors: E? = null,
-    val image: Int? = null
+    val image: Int? = null,
+    var actionDone: Boolean = false,
+    var permissionError: Boolean = false
 ) : Serializable { }

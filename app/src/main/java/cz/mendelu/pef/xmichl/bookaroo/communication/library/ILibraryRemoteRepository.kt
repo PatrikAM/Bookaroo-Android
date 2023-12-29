@@ -7,6 +7,6 @@ interface ILibraryRemoteRepository {
 
     suspend fun fetchLibraries(): CommunicationResult<List<Library>>
 
-    suspend fun createLibrary(library: Library): CommunicationResult<Library>
+    suspend fun createLibrary(library: String): CommunicationResult<Library>
 
 }
