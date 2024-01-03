@@ -19,6 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -35,6 +37,9 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import cz.mendelu.pef.examtemplate2023.ui.theme.basicTextStyle
+import cz.mendelu.pef.examtemplate2023.ui.theme.boldTextStyle
+import cz.mendelu.pef.examtemplate2023.ui.theme.headLine
 
 
 @Destination(route = "map")
@@ -96,7 +101,8 @@ fun MapScreenContent(
             ElevatedCard(
                 Modifier
                     .fillMaxWidth(0.9F)
-                    .padding(10.dp)) {
+                    .padding(10.dp)
+            ) {
                 AsyncImage(
                     "https://images.contentstack.io/v3/assets/blt06f605a34f1194ff/blt4bfcd9c6eb1d4749/625c313698a5e44ea7852880/BCC-2022-IT-PRAGUE-DAY1-STOP1.jpg",
 //                    model = "https://img.freepik.com/free-vector/silhouette-skyline-illustration_53876-78787.jpg",
@@ -108,10 +114,10 @@ fun MapScreenContent(
 //                Modifier
 //                    .fillMaxWidth(0.9F)
 //                    .padding(10.dp)) {
-                AsyncImage(
-                    model = "https://img.freepik.com/free-vector/silhouette-skyline-illustration_53876-78787.jpg",
-                    contentDescription = null,
-                )
+            AsyncImage(
+                model = "https://img.freepik.com/free-vector/silhouette-skyline-illustration_53876-78787.jpg",
+                contentDescription = null,
+            )
 //            }
         }
 
@@ -129,7 +135,7 @@ fun MapScreenContent(
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.End
                 ) {
-                    Text(text = data.ip!!)
+                    Text(text = data.ip!!, fontWeight = FontWeight.Bold)
                 }
             }
 
@@ -146,7 +152,7 @@ fun MapScreenContent(
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.End
                 ) {
-                    data.city?.let { Text(text = it) }
+                    data.city?.let { Text(text = it, fontWeight = FontWeight.Bold) }
                 }
             }
 
@@ -163,7 +169,7 @@ fun MapScreenContent(
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.End
                 ) {
-                    data.region?.let { Text(text = it) }
+                    data.region?.let { Text(text = it, fontWeight = FontWeight.Bold) }
                 }
             }
 
@@ -180,7 +186,7 @@ fun MapScreenContent(
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.End
                 ) {
-                    data.country?.let { Text(text = it) }
+                    data.country?.let { Text(text = it, fontWeight = FontWeight.Bold) }
                 }
             }
 
@@ -196,43 +202,53 @@ fun MapScreenContent(
                     )
                 )
             }
+            Column(Modifier.padding(paddingValues), horizontalAlignment = Alignment.CenterHorizontally) {
 
-            Box(
-                Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-            ) {
-
-                val cameraPositionState = rememberCameraPositionState {
-                    position = CameraPosition.fromLatLngZoom(data.position, 10f)
-                }
+                Text(
+                    text = "Your Current Position",
+                    modifier = Modifier.padding(bottom = 10.dp),
+                    style = headLine()
+                )
 
                 Box(
-                    modifier = Modifier
+                    Modifier
                         .fillMaxSize()
-                ) {
-                    GoogleMap(
-                        modifier = Modifier.fillMaxSize(),
-                        cameraPositionState = cameraPositionState,
-                        uiSettings = mapUiSettings
-                    ) {
 
-                        Marker(
-                            state = MarkerState(data.position),
-                            onClick = {
-                                false
-                            },
+                ) {
+                    ElevatedCard {
+
+                        val cameraPositionState = rememberCameraPositionState {
+                            position = CameraPosition.fromLatLngZoom(data.position, 10f)
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            GoogleMap(
+                                modifier = Modifier.fillMaxSize(),
+                                cameraPositionState = cameraPositionState,
+                                uiSettings = mapUiSettings
+                            ) {
+
+                                Marker(
+                                    state = MarkerState(data.position),
+                                    onClick = {
+                                        false
+                                    },
 //                            icon =
 //                            BitmapDescriptorFactory
 //                                .defaultMarker(
 //                                    BitmapDescriptorFactory.HUE_AZURE
 //                                )
-                        )
+                                )
+                            }
+
+                        }
                     }
 
                 }
             }
-
         }
     }
 

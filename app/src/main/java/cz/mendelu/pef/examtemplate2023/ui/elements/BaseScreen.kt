@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import cz.mendelu.pef.examtemplate2023.ui.theme.headLine
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -43,7 +44,7 @@ fun BaseScreen(
                             if(topBarText != null) {
                                 Text(
                                     text = topBarText,
-                                    style = MaterialTheme.typography.bodySmall,
+                                    style = headLine(),
                                     color = Color.Black,
                                     modifier = Modifier
                                         .padding(start = 0.dp)
@@ -76,8 +77,12 @@ fun BaseScreen(
             } else {
                 if (!drawFullScreenContent) {
                     LazyColumn(
-                        modifier = Modifier.padding(it),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        modifier = Modifier
+                            .padding(it)
+                            .fillMaxHeight()
+                        ,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
                     ) {
                         item {
                             Column(
