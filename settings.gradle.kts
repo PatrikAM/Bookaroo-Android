@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Bookaroo"
+rootProject.name = "ExamTemplate2023"
 include(":app")
  
