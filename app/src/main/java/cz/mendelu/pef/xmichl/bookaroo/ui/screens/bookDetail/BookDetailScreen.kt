@@ -1,13 +1,17 @@
 package cz.mendelu.pef.xmichl.bookaroo.ui.screens.bookDetail
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.rounded.Delete
@@ -23,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,6 +37,8 @@ import cz.mendelu.pef.xmichl.bookaroo.R
 import cz.mendelu.pef.xmichl.bookaroo.model.Book
 import cz.mendelu.pef.xmichl.bookaroo.model.UiState
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BaseScreen
+import cz.mendelu.pef.xmichl.bookaroo.ui.elements.DetailItem
+import cz.mendelu.pef.xmichl.bookaroo.ui.elements.HorizontalLine
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.ImageOnBlurredImage
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.PlaceholderScreenContent
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.BookAddEditScreenDestination
@@ -39,6 +46,7 @@ import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfBooksScreenD
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintAltColor
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintColor
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.headLine
+import cz.mendelu.pef.xmichl.bookaroo.ui.theme.smallMargin
 
 @Destination(route = "bookDetail")
 @Composable
@@ -120,7 +128,8 @@ fun BookDetailScreen(
         ) {
         BookDetailScreenContent(
             paddingValues = it,
-            data = uiState.value.data!!
+            data = uiState.value.data!!,
+            actions = viewModel
         )
     }
 }
@@ -129,16 +138,25 @@ fun BookDetailScreen(
 fun BookDetailScreenContent(
     paddingValues: PaddingValues,
     data: Book,
+    actions: BookActions
 ) {
+    val context = LocalContext.current
+
     Column(
         Modifier
-            .padding(paddingValues), horizontalAlignment = Alignment.CenterHorizontally
+            .padding(paddingValues),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceAround
     ) {
+
         Text(
             data.title ?: stringResource(R.string.unknown),
             style = headLine()
         )
-        Text(data.subtitle ?: "")
+        Text(
+            data.subtitle ?: "",
+            Modifier.padding(smallMargin())
+        )
         Text(
             data.author
                 ?: (stringResource(R.string.unknown)
@@ -149,44 +167,95 @@ fun BookDetailScreenContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
+                .height(200.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            ElevatedCard(
-                modifier = Modifier
-                    .fillMaxHeight()
-            ) {
-                Box(
+            Column(modifier = Modifier.width(200.dp)) {
+                ElevatedCard(
                     modifier = Modifier
-                        .fillMaxWidth(0.5F),
-                    contentAlignment = Alignment.Center
+                        .fillMaxWidth(0.9F)
+                        .fillMaxHeight(0.9F)
+//                    .fillMaxWidth(0.5F)
+//                    .fillMaxHeight(0.5F)
+//                    .fillMaxHeight()
                 ) {
+                    Box(
+                        modifier = Modifier,
+//                            .fillMaxWidth(0.5F),
+                        contentAlignment = Alignment.Center
+                    ) {
 
-                    ImageOnBlurredImage(imageUrl = data.cover)
+                        ImageOnBlurredImage(imageUrl = data.cover)
+                    }
                 }
             }
 
-//            ElevatedCard(
-//                modifier = Modifier
-//                    .fillMaxHeight()
-//                    .fillMaxWidth()
-//            ) {
-            Column {
-                Column {
-                    Text(text = "ISBN", color = getTintAltColor())
-                    data.isbn?.let { Text(text = it) }
+
+
+            Column(
+                modifier = Modifier.width(200.dp)
+            ) {
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9F)
+                        .fillMaxHeight(0.9F)
+                ) {
+                    Column {
+                        Text(text = "ISBN", color = getTintAltColor())
+                        data.isbn?.let { Text(text = it) }
+                    }
+
+                    Spacer(Modifier.size(smallMargin()))
+
+                    Column {
+                        Text(
+                            text = stringResource(R.string.page_count),
+                            color = getTintAltColor()
+                        )
+                        Text(text = (data.pages ?: 0).toString())
+                    }
+
+                    Spacer(Modifier.size(smallMargin()))
+
+                    Column {
+                        Text(
+                            text = stringResource(R.string.published),
+                            color = getTintAltColor()
+                        )
+                        Text(text = (data.published ?: 0).toString())
+                    }
                 }
-                Column {
-                    Text(
-                        text = stringResource(R.string.page_count),
-                        color = getTintAltColor()
-                    )
-                    Text(text = (data.pages ?: 0).toString())
-                }
-//            }
             }
         }
 
-        data.description?.let { Text(text = it) }
+//        HorizontalLine()
+
+        Column {
+            data.publisher?.let {
+                DetailItem(
+                    key = stringResource(R.string.publisher),
+                    value = it
+                ) { key, value ->
+                    actions.insertToClipboard(key, value, context = context)
+                }
+            }
+
+            data.language?.let {
+                DetailItem(
+                    key = stringResource(R.string.language),
+                    value = it
+                ) { key, value ->
+                    actions.insertToClipboard(key, value, context = context)
+                }
+                Text(text = it, color = getTintColor())
+            }
+
+            data.description?.let {
+                Text(text = it, color = getTintColor())
+            }
+        }
 
     }
 }

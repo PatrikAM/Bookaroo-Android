@@ -27,8 +27,8 @@ object RetrofitModule {
     @Singleton
     fun provideRetrofit(moshi: Moshi): Retrofit
             = Retrofit.Builder()
-        .baseUrl("https://23b0-89-248-248-109.ngrok-free.app")
-//        .baseUrl("http://10.0.2.2:8000/")
+//        .baseUrl("https://23b0-89-248-248-109.ngrok-free.app")
+        .baseUrl("http://10.0.2.2:8000/")
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 
@@ -37,7 +37,7 @@ object RetrofitModule {
     @Singleton
     fun provideRetrofitPlaces(moshi: Moshi): Retrofit
             = Retrofit.Builder()
-        .baseUrl("https://maps.googleapis.com/maps/api/place/textsearch/json/")
+        .baseUrl("https://maps.googleapis.com/maps/api/place/")
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 

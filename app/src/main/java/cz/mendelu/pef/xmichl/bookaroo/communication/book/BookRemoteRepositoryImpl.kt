@@ -72,6 +72,7 @@ class BookRemoteRepositoryImpl @Inject constructor(
                 author = book.author!!,
                 library = book.library!!,
                 isbn = book.isbn!!,
+                cover = book.cover,
                 dataStoreRepository.getUserToken()!!
             )
         }

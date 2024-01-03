@@ -118,6 +118,7 @@ dependencies {
     implementation("com.google.maps.android:android-maps-utils:3.5.3")
     implementation("com.google.maps.android:maps-compose-widgets:3.1.1")
     implementation("com.google.maps.android:maps-compose-utils:3.1.1")
+    implementation("com.google.android.gms:play-services-location:18.0.0")
 
     // Room
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")

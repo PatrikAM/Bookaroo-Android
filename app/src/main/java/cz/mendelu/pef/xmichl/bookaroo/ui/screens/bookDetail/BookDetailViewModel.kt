@@ -1,5 +1,8 @@
 package cz.mendelu.pef.xmichl.bookaroo.ui.screens.bookDetail
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
@@ -29,6 +32,13 @@ class BookDetailViewModel
 
     init {
         fetchBook()
+    }
+
+    override fun insertToClipboard(label: String, text: String, context: Context) {
+        val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+
+        val clip = ClipData.newPlainText(label, text)
+        clipboardManager.setPrimaryClip(clip)
     }
 
     fun refreshBook() {

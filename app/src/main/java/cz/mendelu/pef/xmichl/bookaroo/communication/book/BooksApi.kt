@@ -14,7 +14,8 @@ interface BooksApi {
         @Query("title") title: String,
         @Query("author") author: String,
         @Query("library") library: String,
-        @Query("isbn") isbn: String,
+        @Query("isbn") isbn: String?,
+        @Query("cover") cover: String?,
         @Query("token") userToken: String
     ) : Response<Book>
 

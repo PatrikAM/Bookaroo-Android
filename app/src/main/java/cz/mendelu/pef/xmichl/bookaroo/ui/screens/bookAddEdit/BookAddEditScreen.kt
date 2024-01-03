@@ -25,9 +25,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.FragmentManager.BackStackEntry
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.NavBackStackEntry
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import cz.mendelu.pef.xmichl.bookaroo.R
@@ -41,6 +45,8 @@ import cz.mendelu.pef.xmichl.bookaroo.ui.elements.PlaceholderScreenContent
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.SelectItemElement
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.bookDetail.BookErrors
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.BookAddEditScreenDestination
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfBooksScreenDestination
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.listOfBooks.ListOfBooksViewModel
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintAltColor
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintColor
 
@@ -54,6 +60,7 @@ fun BookAddEditScreen(
 ) {
 
     val viewModel = hiltViewModel<BookAddEditViewModel>()
+    val listViewModel = hiltViewModel<ListOfBooksViewModel>()
 
     val uiState: MutableState<UiState<Book, BookErrors>> =
         rememberSaveable {
@@ -73,13 +80,15 @@ fun BookAddEditScreen(
         uiLibState.value = it
     }
 
-    LaunchedEffect(uiState.value.actionDone) {
-        if (uiState.value.actionDone) {
+    if (uiState.value.actionDone) {
+        LaunchedEffect(uiState.value.actionDone) {
+            listViewModel.refreshBooks()
             navigator.popBackStack()
+            if (isbn != null) {
+                navigator.popBackStack()
+            }
         }
     }
-
-//    viewModel.onLibraryChanged(libraryId)
 
     viewModel.responseError
         ?.let { stringResource(id = it) }

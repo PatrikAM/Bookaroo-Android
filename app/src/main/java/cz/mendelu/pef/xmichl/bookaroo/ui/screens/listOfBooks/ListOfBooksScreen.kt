@@ -1,6 +1,5 @@
 package cz.mendelu.pef.xmichl.bookaroo.ui.screens.listOfBooks
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -64,6 +63,7 @@ fun ListOfBooksScreen(
     navigator: DestinationsNavigator,
     libraryId: String? = null
 ) {
+    
     val viewModel = hiltViewModel<ListOfBooksViewModel>()
 
     val uiState: MutableState<UiState<List<Book>, ListOfBooksErrors>> =

@@ -29,7 +29,7 @@ class MarkerUtil {
         fun createBitmapMarker(
             context: Context
         ): Bitmap {
-            return createMarkerIconFromResource(context, R.drawable.ic_launcher_foreground)
+            return createMarkerIconFromResource(context, R.drawable.mm_bookshop)
         }
     }
 

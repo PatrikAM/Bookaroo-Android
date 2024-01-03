@@ -1,6 +1,7 @@
 package cz.mendelu.pef.xmichl.bookaroo.ui.elements
 
 import android.util.Patterns
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -32,6 +33,8 @@ fun ImageOnBlurredImage(
     )
     AsyncImage(
         model = image,
+        modifier = Modifier.fillMaxHeight(),
+        contentScale = ContentScale.FillHeight,
         contentDescription = null
     )
 }

@@ -152,6 +152,10 @@ class BookAddEditViewModel
             bookErrors.libraryError = R.string.required_field
             isError = true
         }
+        if (uiState.value.data?.isbn == null) {
+            bookErrors.isbnError = R.string.required_field
+            isError = true
+        }
         if (isError) {
             // changeTheState
             image = R.drawable.ic_book_lover
@@ -358,7 +362,8 @@ class BookAddEditViewModel
         uiState.value = UiState(
             loading = uiState.value.loading,
             data = uiState.value.data,
-            errors = uiState.value.errors
+            errors = uiState.value.errors,
+            actionDone = uiState.value.actionDone
         )
     }
 
