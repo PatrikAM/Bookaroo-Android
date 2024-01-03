@@ -20,7 +20,7 @@ data class IP(
         try {
             return LatLng(
                 loc!!.split(",")[0].toDouble(),
-                loc!!.split(",")[0].toDouble()
+                loc!!.split(",")[1].toDouble()
             )
 
         } catch (e: Exception) {
@@ -35,7 +35,7 @@ data class IP(
         try {
             LatLng(
                 loc!!.split(",")[0].toDouble(),
-                loc!!.split(",")[0].toDouble()
+                loc!!.split(",")[1].toDouble()
             )
             return true
 
