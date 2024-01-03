@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,8 +36,6 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
-import cz.mendelu.pef.examtemplate2023.ui.theme.basicTextStyle
-import cz.mendelu.pef.examtemplate2023.ui.theme.boldTextStyle
 import cz.mendelu.pef.examtemplate2023.ui.theme.headLine
 
 
@@ -59,7 +56,7 @@ fun MapScreen(
     }
 
     BaseScreen(
-        topBarText = "IP and Location",
+        topBarText = "IP & Location",
         onBackClick = { navigator.navigateUp() },
         drawFullScreenContent = true,
         showLoading = uiState.value.loading,
@@ -105,7 +102,6 @@ fun MapScreenContent(
             ) {
                 AsyncImage(
                     "https://images.contentstack.io/v3/assets/blt06f605a34f1194ff/blt4bfcd9c6eb1d4749/625c313698a5e44ea7852880/BCC-2022-IT-PRAGUE-DAY1-STOP1.jpg",
-//                    model = "https://img.freepik.com/free-vector/silhouette-skyline-illustration_53876-78787.jpg",
                     contentDescription = null
                 )
             }
@@ -128,7 +124,7 @@ fun MapScreenContent(
                     .padding(start = 10.dp, end = 10.dp, top = 10.dp)
             ) {
                 Column(Modifier.fillMaxWidth(0.4F)) {
-                    Text(text = "Current IP is:", color = Color.Black)
+                    Text(text = "IP address:", color = Color.Black)
                 }
                 Column(
                     modifier = Modifier
@@ -236,11 +232,7 @@ fun MapScreenContent(
                                     onClick = {
                                         false
                                     },
-//                            icon =
-//                            BitmapDescriptorFactory
-//                                .defaultMarker(
-//                                    BitmapDescriptorFactory.HUE_AZURE
-//                                )
+
                                 )
                             }
 

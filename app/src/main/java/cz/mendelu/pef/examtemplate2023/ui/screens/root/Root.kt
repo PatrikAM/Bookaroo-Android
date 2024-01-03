@@ -50,7 +50,7 @@ fun RootContent(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "What is My IP and Location?",
+            text = "What is My IP & Location?",
             style = headLine(),
             modifier = Modifier.padding(10.dp)
         )
