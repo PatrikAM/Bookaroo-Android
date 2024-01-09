@@ -1,5 +1,6 @@
 package cz.mendelu.pef.xmichl.bookaroo.communication.places
 
+import cz.mendelu.pef.xmichl.bookaroo.model.GPlace
 import cz.mendelu.pef.xmichl.bookaroo.model.GPlaces
 import retrofit2.Response
 import retrofit2.http.GET
@@ -16,4 +17,9 @@ interface PlacesApi {
         @Query("key") key: String = "AIzaSyCNy-ufOm_1_eiAOMIhFrMGBqMIoSAl7ho"
     ) : Response<GPlaces>
 
+    @GET("details/json")
+    suspend fun getBookStoreDetail(
+        @Query("place_id") placeId: String,
+        @Query("key") key: String = "AIzaSyCNy-ufOm_1_eiAOMIhFrMGBqMIoSAl7ho"
+    ) : Response<GPlace>
 }

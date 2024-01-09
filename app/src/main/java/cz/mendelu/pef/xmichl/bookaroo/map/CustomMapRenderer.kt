@@ -16,11 +16,13 @@ class CustomMapRenderer(
     manager: ClusterManager<BookShop>
 ) : DefaultClusterRenderer<BookShop>(context,map, manager) {
 
-    private val icons: MutableMap<Int, Bitmap> = mutableMapOf()
+//    private val icons: MutableMap<Int, Bitmap> = mutableMapOf()
 
     override fun onBeforeClusterItemRendered(item: BookShop, markerOptions: MarkerOptions) {
         super.onBeforeClusterItemRendered(item, markerOptions)
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getIcon(item)))
+        markerOptions.anchor(0.5F, 0.5F)
+        markerOptions.infoWindowAnchor(0.5F, 0.0F)
     }
 
     override fun shouldRenderAsCluster(cluster: Cluster<BookShop>): Boolean {
@@ -28,10 +30,11 @@ class CustomMapRenderer(
     }
 
     private fun getIcon(place: BookShop): Bitmap {
-        if (!icons.containsKey(0)) {
-            icons.put(0, MarkerUtil.createBitmapMarker(context = context))
-        }
-        return icons[0]!!
+//        if (!icons.containsKey(0)) {
+//            icons.put(0, MarkerUtil.createBitmapMarker(context = context))
+//        }
+//        return icons[0]!!
+        return MarkerUtil.createBitmapMarker(context = context)
 
     }
 }

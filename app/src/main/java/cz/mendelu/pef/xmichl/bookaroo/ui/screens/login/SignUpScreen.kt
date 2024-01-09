@@ -15,11 +15,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import cz.mendelu.pef.xmichl.bookaroo.R
-import cz.mendelu.pef.xmichl.bookaroo.model.BookarooApiResponse
 import cz.mendelu.pef.xmichl.bookaroo.model.Reader
 import cz.mendelu.pef.xmichl.bookaroo.model.UiState
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BaseScreen
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.SingInUpScreenContent
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfLibrariesScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.LoginScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintColor
 
@@ -45,7 +45,7 @@ fun SignUpScreen(
     }
 
     if (uiState.value.data != null) {
-//        navigator.navigate(IntroRootDestination())
+        navigator.navigate(ListOfLibrariesScreenDestination())
     }
 
     BaseScreen(

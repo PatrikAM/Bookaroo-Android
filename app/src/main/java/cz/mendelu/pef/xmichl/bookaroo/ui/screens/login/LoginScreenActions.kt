@@ -4,4 +4,6 @@ interface LoginScreenActions {
     fun login(username: String, password: String)
     fun logout()
     fun onUsernameChanged(username: String?)
+
+    fun onErrorDismiss()
 }

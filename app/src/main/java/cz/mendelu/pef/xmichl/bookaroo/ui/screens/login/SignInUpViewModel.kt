@@ -22,7 +22,16 @@ class SignInUpViewModel
     private val dataStoreRepo: DataStoreRepositoryImpl
 ) : BaseViewModel(), LoginScreenActions, RegisterScreenActions {
 
+
+    val loginUIState: MutableState<UiState<Reader, LoginErrors>> =
+        mutableStateOf(UiState())
+
     init {
+        loginUIState.value = UiState(
+            loading = false,
+            data = null,
+            errors = loginUIState.value.errors
+        )
         launch {
 //            val a = dataStoreRepo.getLoginSuccessful()
 //            if (a) {
@@ -46,9 +55,6 @@ class SignInUpViewModel
     }
 
     var data = LoginData()
-
-    val loginUIState: MutableState<UiState<Reader, LoginErrors>> =
-        mutableStateOf(UiState())
 
     override fun login(username: String, password: String) {
         if (!isUserNameValid(username) || !isPasswordValid(password)) {
@@ -81,7 +87,7 @@ class SignInUpViewModel
                         loginUIState.value = UiState(
                             loading = false,
                             data = null,
-                            errors = LoginErrors(R.string.no_internet_connection)
+                            errors = LoginErrors(R.string.no_internet_connection, showError = true)
                         )
                     }
 
@@ -89,7 +95,7 @@ class SignInUpViewModel
                         loginUIState.value = UiState(
                             loading = false,
                             data = null,
-                            errors = LoginErrors(R.string.failed_to_log_in)
+                            errors = LoginErrors(R.string.failed_to_log_in, showError = true)
                         )
                     }
 
@@ -97,7 +103,7 @@ class SignInUpViewModel
                         loginUIState.value = UiState(
                             loading = false,
                             data = null,
-                            errors = LoginErrors(R.string.unknown_error)
+                            errors = LoginErrors(R.string.unknown_error, showError = true)
                         )
                     }
 
@@ -117,41 +123,50 @@ class SignInUpViewModel
 
     override fun logout() {
         launch {
-            when (val result = repository.logout()) {
-                is CommunicationResult.CommunicationError -> {
-                    loginUIState.value = UiState(
-                        loading = false,
-                        data = null,
-                        errors = LoginErrors(R.string.no_internet_connection)
-                    )
-                }
-
-                is CommunicationResult.Error -> {
-                    loginUIState.value = UiState(
-                        loading = false,
-                        data = null,
-                        errors = LoginErrors(R.string.failed_to_log_in)
-                    )
-                }
-
-                is CommunicationResult.Exception -> {
-                    loginUIState.value = UiState(
-                        loading = false,
-                        data = null,
-                        errors = LoginErrors(R.string.unknown_error)
-                    )
-                }
-
-                is CommunicationResult.Success -> {
+            dataStoreRepo.deleteUserToken()
+            loginUIState.value = UiState(
+                loading = true,
+                data = null,
+                errors = null,
+                actionDone = true
+            )
+        }
+//        launch {
+//            when (val result = repository.logout()) {
+//                is CommunicationResult.CommunicationError -> {
 //                    loginUIState.value = UiState(
 //                        loading = false,
-//                        data = result.data,
-//                        errors = null
+//                        data = null,
+//                        errors = LoginErrors(R.string.no_internet_connection)
 //                    )
-//                    dataStoreRepo.setLogoutSuccessful()
-                }
-            }
-        }
+//                }
+//
+//                is CommunicationResult.Error -> {
+//                    loginUIState.value = UiState(
+//                        loading = false,
+//                        data = null,
+//                        errors = LoginErrors(R.string.failed_to_log_in)
+//                    )
+//                }
+//
+//                is CommunicationResult.Exception -> {
+//                    loginUIState.value = UiState(
+//                        loading = false,
+//                        data = null,
+//                        errors = LoginErrors(R.string.unknown_error)
+//                    )
+//                }
+//
+//                is CommunicationResult.Success -> {
+////                    loginUIState.value = UiState(
+////                        loading = false,
+////                        data = result.data,
+////                        errors = null
+////                    )
+////                    dataStoreRepo.setLogoutSuccessful()
+//                }
+//            }
+//        }
     }
 
     private fun isUserNameValid(username: String): Boolean {
@@ -220,7 +235,7 @@ class SignInUpViewModel
                     loginUIState.value = UiState(
                         loading = false,
                         data = null,
-                        errors = LoginErrors(R.string.no_internet_connection)
+                        errors = LoginErrors(R.string.no_internet_connection, showError = true)
                     )
                 }
 
@@ -228,7 +243,7 @@ class SignInUpViewModel
                     loginUIState.value = UiState(
                         loading = false,
                         data = null,
-                        errors = LoginErrors(R.string.failed_to_log_in)
+                        errors = LoginErrors(R.string.failed_to_log_in, showError = true)
                     )
                 }
 
@@ -236,7 +251,7 @@ class SignInUpViewModel
                     loginUIState.value = UiState(
                         loading = false,
                         data = null,
-                        errors = LoginErrors(R.string.unknown_error)
+                        errors = LoginErrors(R.string.unknown_error, showError = true)
                     )
                 }
 
@@ -262,11 +277,16 @@ class SignInUpViewModel
         updateState()
     }
 
+    override fun onErrorDismiss() {
+        loginUIState.value.errors!!.showError = false
+        updateState()
+    }
+
     fun updateState() {
         loginUIState.value = UiState(
-            loading = false,
-            data = null,
-            errors = null
+            loading = loginUIState.value.loading,
+            data = loginUIState.value.data,
+            errors = loginUIState.value.errors
         )
     }
 }

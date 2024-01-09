@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -62,7 +63,8 @@ fun LoginScreen(
             },
             actions = viewModel,
             data = data,
-            errors = uiState.value.errors
+            errors = uiState.value.errors,
+            isLoading = uiState.value.loading
         )
     }
 }
@@ -73,7 +75,8 @@ fun LoginScreenContent(
     onSignInClick: () -> Unit,
     data: LoginData,
     actions: SignInUpViewModel,
-    errors: LoginErrors?
+    errors: LoginErrors?,
+    isLoading: Boolean
 ) {
     SingInUpScreenContent(
         onSecondaryButtonClick = onSignUpClick,
@@ -92,6 +95,7 @@ fun LoginScreenContent(
         hintText = stringResource(R.string.don_t_have_an_account),
         actions = actions,
         data = data,
-        errors = errors
+        errors = errors,
+        isLoading = isLoading
     )
 }

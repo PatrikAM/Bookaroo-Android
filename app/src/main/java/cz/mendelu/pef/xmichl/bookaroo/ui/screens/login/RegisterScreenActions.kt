@@ -8,4 +8,6 @@ interface RegisterScreenActions {
     )
 
     fun onUsernameChanged(username: String?)
+
+    fun onErrorDismiss()
 }

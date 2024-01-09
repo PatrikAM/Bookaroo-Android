@@ -30,8 +30,10 @@ import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BaseScreen
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BookarooBigCard
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.PlaceholderScreenContent
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.AddEditLibraryScreenDestination
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.BookarooRootDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfBooksScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfLibrariesScreenDestination
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.login.SignInUpViewModel
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintColor
 
 @Destination(route = "libraries")
@@ -40,11 +42,15 @@ fun ListOfLibrariesScreen(
     navigator: DestinationsNavigator
 ) {
     val viewModel = hiltViewModel<ListOfLibrariesViewModel>()
+    val loginViewModel = hiltViewModel<SignInUpViewModel>()
 
     val uiState: MutableState<UiState<List<Library>, ListOfLibrariesErrors>> =
         rememberSaveable {
             mutableStateOf(UiState())
         }
+
+    if (loginViewModel.loginUIState.value.actionDone)
+        navigator.navigate(BookarooRootDestination())
 
 
     viewModel.uiState.value.let {
@@ -86,7 +92,7 @@ fun ListOfLibrariesScreen(
             }
             IconButton(
                 onClick = {
-//                    viewModel.logout()
+                    loginViewModel.logout()
                 }
             ) {
                 Icon(

@@ -79,6 +79,10 @@ class DataStoreRepositoryImpl @Inject constructor(private val context: Context) 
         setStringPrefKey(token, DataStoreConstants.USER_TOKEN)
     }
 
+    override suspend fun deleteUserToken() {
+        setStringPrefKey(null, DataStoreConstants.USER_TOKEN)
+    }
+
     override suspend fun getUserToken(): String? {
         return getStringPrefKey(DataStoreConstants.USER_TOKEN)
     }

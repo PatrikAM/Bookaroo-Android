@@ -1,6 +1,5 @@
 package cz.mendelu.pef.xmichl.bookaroo.communication.gbooks
 
-import cz.mendelu.pef.xmichl.bookaroo.model.GBook
 import cz.mendelu.pef.xmichl.bookaroo.model.GBooks
 import retrofit2.Response
 import retrofit2.http.GET

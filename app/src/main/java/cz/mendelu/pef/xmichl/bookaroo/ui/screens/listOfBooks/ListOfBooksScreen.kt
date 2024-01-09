@@ -50,7 +50,9 @@ import cz.mendelu.pef.xmichl.bookaroo.ui.elements.PlaceholderScreenContent
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.BarcodeScannerScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.BookAddEditScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.BookDetailScreenDestination
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.BookarooRootDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfBooksScreenDestination
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.login.SignInUpViewModel
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.basicMargin
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintColor
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.headLine
@@ -65,6 +67,11 @@ fun ListOfBooksScreen(
 ) {
     
     val viewModel = hiltViewModel<ListOfBooksViewModel>()
+
+    val loginViewModel = hiltViewModel<SignInUpViewModel>()
+
+    if (loginViewModel.loginUIState.value.actionDone)
+        navigator.navigate(BookarooRootDestination())
 
     val uiState: MutableState<UiState<List<Book>, ListOfBooksErrors>> =
         rememberSaveable {
@@ -180,7 +187,7 @@ fun ListOfBooksScreen(
             }
             IconButton(
                 onClick = {
-//                    viewModel.logout()
+                    loginViewModel.logout()
                 }
             ) {
                 Icon(
