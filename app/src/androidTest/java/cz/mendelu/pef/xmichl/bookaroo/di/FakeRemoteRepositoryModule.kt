@@ -2,8 +2,10 @@ package cz.mendelu.pef.xmichl.bookaroo.di
 
 import cz.mendelu.pef.xmichl.bookaroo.communication.book.IBookRemoteRepository
 import cz.mendelu.pef.xmichl.bookaroo.communication.gbooks.IGBooksRemoteRepository
+import cz.mendelu.pef.xmichl.bookaroo.communication.library.ILibraryRemoteRepository
 import cz.mendelu.pef.xmichl.bookaroo.communication.places.IPlacesRemoteRepository
 import cz.mendelu.pef.xmichl.bookaroo.communication.reader.IReaderRemoteRepository
+import cz.mendelu.pef.xmichl.bookaroo.datastore.DataStoreRepositoryImpl
 import cz.mendelu.pef.xmichl.bookaroo.fakeRepostiory.BooksFakeRepository
 import cz.mendelu.pef.xmichl.bookaroo.fakeRepostiory.GBooksFakeRepository
 import cz.mendelu.pef.xmichl.bookaroo.fakeRepostiory.LibraryFakeRepository
@@ -19,7 +21,7 @@ import dagger.hilt.testing.TestInstallIn
     components = [SingletonComponent::class],
     replaces = [RemoteRepositoryModule::class],
 )
-abstract class RemoteRepositoryModule {
+abstract class FakeRemoteRepositoryModule {
 
     // datastore?
     @Binds
@@ -35,6 +37,6 @@ abstract class RemoteRepositoryModule {
     abstract fun provideGBooksRepository(service: GBooksFakeRepository): IGBooksRemoteRepository
 
     @Binds
-    abstract fun provideLibRepository(service: LibraryFakeRepository): IReaderRemoteRepository
+    abstract fun provideLibRepository(service: LibraryFakeRepository): ILibraryRemoteRepository
 
 }

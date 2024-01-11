@@ -1,5 +1,6 @@
 package cz.mendelu.pef.xmichl.bookaroo.ui.screens.bookDetail
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,14 +29,19 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.utils.route
 import cz.mendelu.pef.xmichl.bookaroo.R
 import cz.mendelu.pef.xmichl.bookaroo.model.Book
 import cz.mendelu.pef.xmichl.bookaroo.model.UiState
+import cz.mendelu.pef.xmichl.bookaroo.testTags.BooksTestTags
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BaseScreen
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.DetailItem
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.HorizontalLine
@@ -51,9 +57,10 @@ import cz.mendelu.pef.xmichl.bookaroo.ui.theme.smallMargin
 @Destination(route = "bookDetail")
 @Composable
 fun BookDetailScreen(
+    navController: NavController,
     navigator: DestinationsNavigator,
     bookId: String,
-) {
+    ) {
 
     val viewModel = hiltViewModel<BookDetailViewModel>()
 
@@ -66,10 +73,9 @@ fun BookDetailScreen(
         uiState.value = it
     }
 
-
-
     if (uiState.value.actionDone) {
         LaunchedEffect(uiState.value.actionDone) {
+            navController.previousBackStackEntry?.savedStateHandle?.set("reload", true)
             navigator.popBackStack()
         }
     }
@@ -109,7 +115,6 @@ fun BookDetailScreen(
             }
             IconButton(
                 onClick = {
-//                    viewModel.logout()
                     navigator.navigate(BookAddEditScreenDestination(bookId))
                 }
             ) {
@@ -151,7 +156,8 @@ fun BookDetailScreenContent(
 
         Text(
             data.title ?: stringResource(R.string.unknown),
-            style = headLine()
+            style = headLine(),
+            modifier = Modifier.testTag(BooksTestTags.TestTagBookTitle)
         )
         Text(
             data.subtitle ?: "",
@@ -161,7 +167,8 @@ fun BookDetailScreenContent(
             data.author
                 ?: (stringResource(R.string.unknown)
                         + " "
-                        + stringResource(R.string.author))
+                        + stringResource(R.string.author)),
+            modifier = Modifier.testTag(BooksTestTags.TestTagBookAuthor)
         )
 
         Row(
@@ -204,7 +211,12 @@ fun BookDetailScreenContent(
                 ) {
                     Column {
                         Text(text = "ISBN", color = getTintAltColor())
-                        data.isbn?.let { Text(text = it) }
+                        data.isbn?.let {
+                            Text(
+                                text = it,
+                                modifier = Modifier.testTag(BooksTestTags.TestTagBookISBN)
+                            )
+                        }
                     }
 
                     Spacer(Modifier.size(smallMargin()))

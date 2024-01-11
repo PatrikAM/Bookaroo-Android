@@ -25,7 +25,6 @@ import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfLibrariesScr
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.SignUpScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintColor
 
-
 @Destination(route = "login")
 @Composable
 fun LoginScreen(

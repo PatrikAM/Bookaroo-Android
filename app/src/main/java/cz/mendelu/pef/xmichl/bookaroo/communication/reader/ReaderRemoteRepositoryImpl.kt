@@ -12,31 +12,57 @@ class ReaderRemoteRepositoryImpl @Inject constructor(private val readerApi: Read
     : IBaseRemoteRepository, IReaderRemoteRepository {
 
     override suspend fun login(login: String, password: String): CommunicationResult<Reader> {
-        val response = withContext(Dispatchers.IO) {
-            readerApi.login(login = login, password = password)
+
+        return processResponse {
+            readerApi.login(
+                login = login,
+                password = password
+            )
         }
-        return processResponse(response)
+
+//        val response = withContext(Dispatchers.IO) {
+//            readerApi.login(login = login, password = password)
+//        }
+//        return processResponse(response)
     }
 
     override suspend fun register(login: String, password: String, name: String): CommunicationResult<Reader> {
-        val response = withContext(Dispatchers.IO) {
-            readerApi.register(login = login, password = password, name = name)
+
+        return processResponse {
+            readerApi.register(
+                login = login,
+                password = password,
+                name = name
+            )
         }
-        return processResponse(response)
+
+//        val response = withContext(Dispatchers.IO) {
+//            readerApi.register(login = login, password = password, name = name)
+//        }
+//        return processResponse(response)
     }
 
     override suspend fun logout(): CommunicationResult<BookarooApiResponse> {
-        val response = withContext(Dispatchers.IO) {
+
+        return processResponse {
             readerApi.logout()
         }
-        return processResponse(response)
+
+//        val response = withContext(Dispatchers.IO) {
+//            readerApi.logout()
+//        }
+//        return processResponse(response)
     }
 
     override suspend fun closeAccount(): CommunicationResult<BookarooApiResponse> {
-        val response = withContext(Dispatchers.IO) {
+        return processResponse {
             readerApi.closeAccount()
         }
-        return processResponse(response)
+        
+//        val response = withContext(Dispatchers.IO) {
+//            readerApi.closeAccount()
+//        }
+//        return processResponse(response)
     }
 
 }

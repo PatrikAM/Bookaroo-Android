@@ -25,13 +25,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.FragmentManager.BackStackEntry
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import cz.mendelu.pef.xmichl.bookaroo.R
@@ -45,22 +42,20 @@ import cz.mendelu.pef.xmichl.bookaroo.ui.elements.PlaceholderScreenContent
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.SelectItemElement
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.bookDetail.BookErrors
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.BookAddEditScreenDestination
-import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfBooksScreenDestination
-import cz.mendelu.pef.xmichl.bookaroo.ui.screens.listOfBooks.ListOfBooksViewModel
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintAltColor
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintColor
 
 @Destination(route = "bookAddEdit")
 @Composable
 fun BookAddEditScreen(
+    navController: NavController,
     navigator: DestinationsNavigator,
     bookId: String? = null,
     libraryId: String? = null,
-    isbn: String? = null,
+    isbn: String? = null
 ) {
 
     val viewModel = hiltViewModel<BookAddEditViewModel>()
-    val listViewModel = hiltViewModel<ListOfBooksViewModel>()
 
     val uiState: MutableState<UiState<Book, BookErrors>> =
         rememberSaveable {
@@ -82,11 +77,8 @@ fun BookAddEditScreen(
 
     if (uiState.value.actionDone) {
         LaunchedEffect(uiState.value.actionDone) {
-            listViewModel.refreshBooks()
+            navController.previousBackStackEntry?.savedStateHandle?.set("reload", true)
             navigator.popBackStack()
-            if (isbn != null) {
-                navigator.popBackStack()
-            }
         }
     }
 
@@ -109,19 +101,17 @@ fun BookAddEditScreen(
 
     BaseScreen(
         topBarText = "",
-        onBackClick = { navigator.navigateUp() },
+        onBackClick = {
+            navController.previousBackStackEntry?.savedStateHandle?.set("reload", false)
+            navigator.popBackStack()
+        },
         drawFullScreenContent = true,
         showLoading = uiState.value.loading,
-//        placeholderScreenContent = if (uiState.value.errors != null &&
-//            !uiState.value.loading
-//        ) {
-//            PlaceholderScreenContent(
-//                image = R.drawable.ic_book_lover,
-//                text = stringResource(id = uiState.value.errors!!.communicationError)
-//            )
-//        } else null,
         actions = {
-            Button(onClick = {
+            Button(
+                enabled = !viewModel.uiState.value.loading,
+//                || (bookId == null && isbn == null),
+                onClick = {
                 viewModel.saveBook()
             }) {
                 Icon(
@@ -145,14 +135,14 @@ fun BookAddEditScreen(
             libraries = uiLibState.value.data ?: listOf(),
             isLibraryCreationDone = !uiLibState.value.loading,
             valueErrors = viewModel.bookErrors,
-            responseError = viewModel.responseError,
-            placeholderScreenContent = PlaceholderScreenContent(
-                image = viewModel.image,
-                text = if (viewModel.responseError != null) {
-                    stringResource(id = viewModel.responseError!!)
-                } else null
-            ),
-            showDialog = viewModel.showDialog
+//            responseError = viewModel.responseError,
+//            placeholderScreenContent = PlaceholderScreenContent(
+//                image = viewModel.image,
+//                text = if (viewModel.responseError != null) {
+//                    stringResource(id = viewModel.responseError!!)
+//                } else null
+//            ),
+//            showDialog = viewModel.showDialog
         )
     }
 }
@@ -165,9 +155,9 @@ fun BookAddEditScreenContent(
     actions: BookAddEditActions,
     isLibraryCreationDone: Boolean,
     valueErrors: BookValueErrors,
-    responseError: Int? = null,
-    placeholderScreenContent: PlaceholderScreenContent,
-    showDialog: Boolean
+//    responseError: Int? = null,
+//    placeholderScreenContent: PlaceholderScreenContent,
+//    showDialog: Boolean
 ) {
 
     val isAdvancedOpened = rememberSaveable {
@@ -229,16 +219,6 @@ fun BookAddEditScreenContent(
             },
             isLibraryCreationDone = isLibraryCreationDone
         )
-
-        // Publisher
-
-        // PublishedDate
-//        MyTextfield(
-//            value = data.publishDate ?: "",
-//            onValueChange = { actions.onTitleChanged(it) },
-//            leadingIcon = null,
-//            label = stringResource(R.string.title),
-//            onClearClick = { actions.onTitleChanged(null) })
 
         Row(
             modifier = Modifier

@@ -4,10 +4,13 @@ import cz.mendelu.pef.xmichl.bookaroo.architecture.CommunicationResult
 import cz.mendelu.pef.xmichl.bookaroo.communication.reader.IReaderRemoteRepository
 import cz.mendelu.pef.xmichl.bookaroo.model.BookarooApiResponse
 import cz.mendelu.pef.xmichl.bookaroo.model.Reader
+import javax.inject.Inject
 
-class ReadersFakeRepository: IReaderRemoteRepository {
+class ReadersFakeRepository @Inject constructor(): IReaderRemoteRepository {
     override suspend fun login(login: String, password: String): CommunicationResult<Reader> {
-        TODO("Not yet implemented")
+        return CommunicationResult.Success(
+            Reader("userid", login = login, name = "", token = "")
+        )
     }
 
     override suspend fun register(
@@ -15,7 +18,9 @@ class ReadersFakeRepository: IReaderRemoteRepository {
         password: String,
         name: String
     ): CommunicationResult<Reader> {
-        TODO("Not yet implemented")
+        return CommunicationResult.Success(
+            Reader("userid", login = login, name = "", token = "")
+        )
     }
 
     override suspend fun logout(): CommunicationResult<BookarooApiResponse> {

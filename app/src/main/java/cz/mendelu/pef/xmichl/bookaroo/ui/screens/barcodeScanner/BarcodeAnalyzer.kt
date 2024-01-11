@@ -2,7 +2,6 @@ package cz.mendelu.pef.xmichl.bookaroo.ui.screens.barcodeScanner
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.widget.Toast
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -33,7 +32,6 @@ class BarcodeAnalyzer(
                     ?.mapNotNull { it.rawValue }
                     ?.joinToString(",")
                     ?.let {
-                        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                         onSuccess(it)
                     }
             }.addOnCompleteListener {

@@ -1,4 +1,4 @@
-package cz.mendelu.pef.xmichl.bookaroo
+package cz.mendelu.pef.xmichl.bookaroo.validator
 
 import cz.mendelu.pef.xmichl.bookaroo.extension.isValidEmail
 import org.junit.Assert.assertFalse

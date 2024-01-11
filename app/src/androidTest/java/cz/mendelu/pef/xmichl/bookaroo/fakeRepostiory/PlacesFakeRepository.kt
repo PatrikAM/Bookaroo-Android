@@ -5,8 +5,9 @@ import cz.mendelu.pef.xmichl.bookaroo.architecture.CommunicationResult
 import cz.mendelu.pef.xmichl.bookaroo.communication.places.IPlacesRemoteRepository
 import cz.mendelu.pef.xmichl.bookaroo.model.GPlace
 import cz.mendelu.pef.xmichl.bookaroo.model.GPlaces
+import javax.inject.Inject
 
-class PlacesFakeRepository: IPlacesRemoteRepository {
+class PlacesFakeRepository @Inject constructor(): IPlacesRemoteRepository {
     override suspend fun getBookStores(location: LatLng): CommunicationResult<GPlaces> {
         TODO("Not yet implemented")
     }

@@ -4,8 +4,9 @@ import cz.mendelu.pef.xmichl.bookaroo.architecture.CommunicationResult
 import cz.mendelu.pef.xmichl.bookaroo.communication.book.IBookRemoteRepository
 import cz.mendelu.pef.xmichl.bookaroo.mock.BokarooBooksServerMock
 import cz.mendelu.pef.xmichl.bookaroo.model.Book
+import javax.inject.Inject
 
-class BooksFakeRepository: IBookRemoteRepository {
+class BooksFakeRepository @Inject constructor(): IBookRemoteRepository {
 
     override suspend fun fetchBooks(): CommunicationResult<List<Book>> {
         return CommunicationResult.Success(
@@ -15,19 +16,19 @@ class BooksFakeRepository: IBookRemoteRepository {
 
     override suspend fun fetchBook(bookId: String): CommunicationResult<Book> {
         val books = BokarooBooksServerMock.all.filter { it.id == bookId }
-        if (books.isNotEmpty()) {
-            return CommunicationResult.Success(books[0])
+        return if (books.isNotEmpty()) {
+            CommunicationResult.Success(books[0])
         } else {
-            return CommunicationResult.CommunicationError()
+            CommunicationResult.CommunicationError()
         }
     }
 
     override suspend fun fetchBooksFromLibrary(libraryId: String): CommunicationResult<List<Book>> {
         val books = BokarooBooksServerMock.all.filter { it.library == libraryId }
-        if (books.isNotEmpty()) {
-            return CommunicationResult.Success(books)
+        return if (books.isNotEmpty()) {
+            CommunicationResult.Success(books)
         } else {
-            return CommunicationResult.CommunicationError()
+            CommunicationResult.CommunicationError()
         }
     }
 

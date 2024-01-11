@@ -7,8 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import cz.mendelu.pef.xmichl.bookaroo.testTags.BooksTestTags
 
 @Composable
 fun ImageOnBlurredImage(
@@ -33,8 +35,8 @@ fun ImageOnBlurredImage(
     )
     AsyncImage(
         model = image,
-        modifier = Modifier.fillMaxHeight(),
+        modifier = Modifier.fillMaxHeight().testTag(BooksTestTags.TestTagBookImage),
         contentScale = ContentScale.FillHeight,
-        contentDescription = null
+        contentDescription = null,
     )
 }

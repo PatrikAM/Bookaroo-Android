@@ -29,10 +29,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
@@ -43,6 +45,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import cz.mendelu.pef.xmichl.bookaroo.R
 import cz.mendelu.pef.xmichl.bookaroo.model.Book
 import cz.mendelu.pef.xmichl.bookaroo.model.UiState
+import cz.mendelu.pef.xmichl.bookaroo.testTags.BooksTestTags
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BaseScreen
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BookarooDialog
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BookarooSmallCard
@@ -62,10 +65,11 @@ import cz.mendelu.pef.xmichl.bookaroo.ui.theme.smallMargin
 @Destination(route = "books")
 @Composable
 fun ListOfBooksScreen(
+    navController: NavController,
     navigator: DestinationsNavigator,
     libraryId: String? = null
 ) {
-    
+
     val viewModel = hiltViewModel<ListOfBooksViewModel>()
 
     val loginViewModel = hiltViewModel<SignInUpViewModel>()
@@ -77,6 +81,19 @@ fun ListOfBooksScreen(
         rememberSaveable {
             mutableStateOf(UiState())
         }
+
+    navController.currentBackStackEntry?.let {
+        if (
+            it.savedStateHandle.contains("reload")
+            && it.savedStateHandle.get<Boolean>("reload")!!
+        ) {
+            viewModel.refreshBooks()
+
+            navController.currentBackStackEntry?.savedStateHandle?.remove<Boolean>(
+                "reload"
+            )
+        }
+    }
 
     viewModel.uiState.value.let {
         uiState.value = it
@@ -218,7 +235,11 @@ fun ListOfBooksScreen(
             paddingValues = it,
             uiState = uiState.value,
             onRowClick = {
-                navigator.navigate(BookDetailScreenDestination(it))
+                navigator.navigate(
+                    BookDetailScreenDestination(
+                        bookId = it
+                    )
+                )
             },
         )
     }
@@ -234,7 +255,8 @@ fun ListOfBooksScreenContent(
     LazyColumn(
         modifier = Modifier
             .padding(paddingValues)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .testTag(BooksTestTags.TestTagBooksList),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         uiState.data?.forEach {
@@ -246,7 +268,8 @@ fun ListOfBooksScreenContent(
                     modifier = Modifier
                         .size(width = 320.dp, height = 170.dp)
                         .fillParentMaxWidth(0.9f)
-                        .padding(all = 10.dp),
+                        .padding(all = 10.dp)
+                        .testTag(BooksTestTags.TestTagBookCard + it.id),
 //                    imageHeight = 120.dp,
 //                    imageWidth = 100.dp,
                     photo = it.cover ?: "",

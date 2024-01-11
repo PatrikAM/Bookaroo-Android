@@ -1,9 +1,6 @@
 package cz.mendelu.pef.xmichl.bookaroo.ui.elements
 
-import android.content.res.Resources.Theme
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
@@ -36,6 +33,8 @@ import cz.mendelu.pef.xmichl.bookaroo.ui.theme.basicMargin
 
 @Composable
 fun MyTextfield(
+    modifier: Modifier = Modifier,
+    errorModifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     leadingIcon: ImageVector? = null,
@@ -114,7 +113,8 @@ fun MyTextfield(
 //                    if (value.isEmpty()) {
                         Text(
                             text = stringResource(id = textError),
-                            color = Color.Red
+                            color = Color.Red,
+                            modifier = errorModifier
                         )
 //                    }
                 }
@@ -122,12 +122,12 @@ fun MyTextfield(
                     Text(
                         text = "${value.length} / $charLimit",
                         modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.End,
+                        textAlign = TextAlign.End
                     )
                 }
             }
         },
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(bottom = basicMargin())
     )

@@ -4,6 +4,8 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Looper
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,6 +18,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,14 +36,20 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterManager
+import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapEffect
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.MapsComposeExperimentalApi
+import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -55,6 +64,8 @@ import cz.mendelu.pef.xmichl.bookaroo.ui.elements.PlaceholderScreenContent
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.BookShopMapScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.BookarooTheme
 
+
+lateinit var locationCallback: LocationCallback
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination
@@ -77,9 +88,57 @@ fun BookShopMapScreen(navigator: DestinationsNavigator) {
         detailUiState.value = it
     }
 
-    LocationPermission {
+    LocationPermission(Manifest.permission.ACCESS_FINE_LOCATION) {
         viewModel.onPermissionError()
     }
+
+    LocationPermission(Manifest.permission.ACCESS_COARSE_LOCATION) {
+        viewModel.onPermissionError()
+    }
+
+    val context = LocalContext.current
+
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(viewModel.location, 10f)
+    }
+
+    locationCallback = object : LocationCallback() {
+        override fun onLocationResult(p0: LocationResult) {
+            for (lo in p0.locations) {
+                if (!viewModel.bookShopsFetched) {
+                    cameraPositionState.position =
+                        CameraPosition.fromLatLngZoom(viewModel.location, 10f)
+                    viewModel.onLocationChange(LatLng(lo.latitude, lo.longitude))
+                }
+
+            }
+        }
+    }
+
+//    viewModel.startLocationUpdates(context)
+    LaunchedEffect(context) {
+        viewModel.startLocationUpdates(context)
+    }
+
+//    LaunchedEffect(viewModel.location) {
+//        val permission = Manifest.permission.ACCESS_COARSE_LOCATION
+//        val res = context.checkCallingOrSelfPermission(permission)
+//        if (res == PackageManager.PERMISSION_GRANTED) {
+//            getUserLocation(context = context).let {
+//                if (it.latitude != 0.0 && it.longitude != 0.0) {
+//                    viewModel.location = it
+//                    viewModel.mapDataChanged()
+//                    LaunchedEffect(viewModel.location) {
+//                        viewModel.fetchPlaces()
+//                    }
+//                }
+//            }
+////            LaunchedEffect(viewModel.location) {
+////                viewModel.fetchPlaces()
+////                Log.d("location", "${viewModel.location}")
+////            }
+////        }
+//    }
 
     if (viewModel.showDialog) {
         BookarooDialog(
@@ -104,18 +163,6 @@ fun BookShopMapScreen(navigator: DestinationsNavigator) {
             }
         }
     }
-
-//    val gpsPermissionState =
-//        rememberPermissionState(android.Manifest.permission.ACCESS_FINE_LOCATION)
-//
-//    checkGPSPermsAndNavigate(
-//        gpsPermissionState,
-//        onShouldShowRationale = {
-//            viewModel.onPermissionError()
-//        }
-//    ) {
-//
-//    }
 
     if (uiState.value.permissionError) {
         BookarooDialog(
@@ -144,7 +191,9 @@ fun BookShopMapScreen(navigator: DestinationsNavigator) {
 //            actions = viewModel,
             navigator = navigator,
             mapData = uiState.value.data,
-            actions = viewModel
+            actions = viewModel,
+            location = viewModel.location,
+            cameraPositionState = cameraPositionState
         )
     }
 }
@@ -157,25 +206,19 @@ fun BookShopMapScreenContent(
     navigator: DestinationsNavigator,
     actions: BookShopMapActions,
     mapData: MapData?,
+    location: LatLng,
+    cameraPositionState: CameraPositionState
 ) {
 
     val mapUiSettings by remember {
         mutableStateOf(
             MapUiSettings(
                 zoomControlsEnabled = false,
-                mapToolbarEnabled = false
+                mapToolbarEnabled = false,
+                myLocationButtonEnabled = true
             )
         )
     }
-
-    val context = LocalContext.current
-
-    val location = getCurrentLocation(context)
-
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(location, 10f)
-    }
-
 
     var googleMap by remember {
         mutableStateOf<GoogleMap?>(null)
@@ -191,6 +234,8 @@ fun BookShopMapScreenContent(
         manager?.addItems(mapData.places)
         manager?.cluster()
     }
+
+    val context = LocalContext.current
 
     Box(
         Modifier
@@ -246,33 +291,15 @@ fun BookShopMapScreenContent(
     }
 }
 
-//@ExperimentalPermissionsApi
-//private fun checkGPSPermsAndNavigate(
-//    gpsPermissionState: PermissionState,
-//    onShouldShowRationale: () -> Unit,
-//    onAllowed: () -> Unit,
-//) {
-//    if (gpsPermissionState.status.isGranted) {
-//        onAllowed()
-//    } else if (gpsPermissionState.status.shouldShowRationale) {
-//        onShouldShowRationale()
-//    } else {
-//        gpsPermissionState.run { launchPermissionRequest() }
-//    }
-//}
-
-//@SuppressLint("PermissionLaunchedDuringComposition")
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun LocationPermission(
 //    gpsPermissionState: PermissionState,
+    perm: String,
     onShouldShowRationale: () -> Unit,
 //    onAllowed: () -> Unit,
 ) {
-    val perm: String = android.Manifest.permission.ACCESS_FINE_LOCATION
-//    if (Build.VERSION.SDK_INT > 32) {
-//        perm = android.Manifest.permission.READ_MEDIA_IMAGES
-//    }
+
     val permissionState =
         rememberPermissionState(permission = perm)
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -298,24 +325,4 @@ fun LocationPermission(
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     })
-}
-
-@Composable
-fun getCurrentLocation(context: Context): LatLng {
-    val latitude = 49.0
-    val longitude = 16.0
-
-    var location = LatLng(latitude, longitude)
-
-    val permission = Manifest.permission.ACCESS_FINE_LOCATION;
-    val res = context.checkCallingOrSelfPermission(permission);
-    if (res == PackageManager.PERMISSION_GRANTED) {
-        getUserLocation(context = context).let {
-            if (it.latitude != 0.0 && it.longitude != 0.0) {
-                location = it
-            }
-        }
-    }
-
-    return location
 }

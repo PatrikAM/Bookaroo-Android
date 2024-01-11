@@ -9,4 +9,4 @@ open class UiState<T, E>(
     val image: Int? = null,
     var actionDone: Boolean = false,
     var permissionError: Boolean = false
-) : Serializable { }
+) : Serializable

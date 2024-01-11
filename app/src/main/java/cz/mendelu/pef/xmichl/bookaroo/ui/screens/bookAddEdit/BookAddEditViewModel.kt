@@ -83,10 +83,9 @@ class BookAddEditViewModel
             ) {
 
                 is CommunicationResult.CommunicationError -> {
-
                     uiState.value = UiState(
                         loading = false,
-                        data = null,
+                        data = Book(),
                         image = R.drawable.ic_connection,
                         errors = BookErrors(R.string.no_internet_connection)
                     )
@@ -95,7 +94,7 @@ class BookAddEditViewModel
                 is CommunicationResult.Error -> {
                     uiState.value = UiState(
                         loading = false,
-                        data = null,
+                        data = Book(),
                         image = R.drawable.ic_bookshelves,
                         errors = BookErrors(R.string.failed_to_fetch_this_book)
                     )
@@ -104,7 +103,7 @@ class BookAddEditViewModel
                 is CommunicationResult.Exception -> {
                     uiState.value = UiState(
                         loading = false,
-                        data = null,
+                        data = Book(),
                         image = R.drawable.ic_book_lover,
                         errors = BookErrors(R.string.unknown_error)
                     )
@@ -115,7 +114,7 @@ class BookAddEditViewModel
                     if (result.data.items?.get(0)?.convert() == null) {
                         uiState.value = UiState(
                             loading = false,
-                            data = null,
+                            data = Book(),
                             image = R.drawable.ic_bookshelves,
                             errors = BookErrors(R.string.failed_to_fetch_this_book)
                         )

@@ -9,6 +9,8 @@ import cz.mendelu.pef.xmichl.bookaroo.architecture.CommunicationResult
 import cz.mendelu.pef.xmichl.bookaroo.communication.reader.IReaderRemoteRepository
 import cz.mendelu.pef.xmichl.bookaroo.datastore.DataStoreRepositoryImpl
 import cz.mendelu.pef.xmichl.bookaroo.datastore.IDataStoreRepository
+import cz.mendelu.pef.xmichl.bookaroo.extension.isValidEmail
+import cz.mendelu.pef.xmichl.bookaroo.extension.isValidPassword
 import cz.mendelu.pef.xmichl.bookaroo.model.Reader
 import cz.mendelu.pef.xmichl.bookaroo.model.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -170,30 +172,11 @@ class SignInUpViewModel
     }
 
     private fun isUserNameValid(username: String): Boolean {
-        return if (username.contains("@")) {
-            Patterns.EMAIL_ADDRESS.matcher(username).matches()
-        } else {
-            false
-        }
+        return  username.isValidEmail()
     }
 
     private fun isPasswordValid(password: String): Boolean {
-
-        if (password.length < 6) {
-            return false
-        }
-
-        val specialCharacterPattern = Regex("[!@#$%^&*(),.?\":{}|<>]")
-        if (!specialCharacterPattern.containsMatchIn(password)) {
-            return false
-        }
-
-        val digitPattern = Regex("\\d")
-        if (!digitPattern.containsMatchIn(password)) {
-            return false
-        }
-
-        return true
+        return password.isValidPassword()
     }
 
     private fun checkFormQualityAndSetErrors(): Boolean {
@@ -225,43 +208,65 @@ class SignInUpViewModel
     }
 
     override fun register(username: String, password: String, name: String) {
-        if (checkFormQualityAndSetErrors()) {
-            return
-        }
-        launch {
-            when (val result =
-                repository.register(login = username, password = password, name = "")) {
-                is CommunicationResult.CommunicationError -> {
-                    loginUIState.value = UiState(
-                        loading = false,
-                        data = null,
-                        errors = LoginErrors(R.string.no_internet_connection, showError = true)
-                    )
-                }
+        if (!isUserNameValid(username) || !isPasswordValid(password)) {
+            if (loginUIState.value.errors == null) {
+                loginUIState.value.errors = LoginErrors()
+            }
 
-                is CommunicationResult.Error -> {
-                    loginUIState.value = UiState(
-                        loading = false,
-                        data = null,
-                        errors = LoginErrors(R.string.failed_to_log_in, showError = true)
-                    )
-                }
+            if (!isPasswordValid(password))
+//                data.passwordError = R.string.password_length_7
+                loginUIState.value.errors!!.passwordError = R.string.password_length_6
+            else
+                loginUIState.value.errors!!.passwordError = null
 
-                is CommunicationResult.Exception -> {
-                    loginUIState.value = UiState(
-                        loading = false,
-                        data = null,
-                        errors = LoginErrors(R.string.unknown_error, showError = true)
-                    )
-                }
+            if (!isUserNameValid(username))
+                loginUIState.value.errors!!.usernameError = R.string.email_is_not_valid
+            else
+                loginUIState.value.errors!!.usernameError = null
 
-                is CommunicationResult.Success -> {
-                    loginUIState.value = UiState(
-                        loading = true,
-                        data = result.data,
-                        errors = null
-                    )
-                    dataStoreRepo.setUserToken(result.data.token)
+            loginUIState.value.errors!!.communicationError = R.string.failed_to_log_in
+
+            loginUIState.value = UiState(
+                loading = false,
+                data = null,
+                errors = loginUIState.value.errors
+            )
+        } else {
+            launch {
+                when (val result =
+                    repository.register(login = username, password = password, name = "")) {
+                    is CommunicationResult.CommunicationError -> {
+                        loginUIState.value = UiState(
+                            loading = false,
+                            data = null,
+                            errors = LoginErrors(R.string.no_internet_connection, showError = true)
+                        )
+                    }
+
+                    is CommunicationResult.Error -> {
+                        loginUIState.value = UiState(
+                            loading = false,
+                            data = null,
+                            errors = LoginErrors(R.string.failed_to_log_in, showError = true)
+                        )
+                    }
+
+                    is CommunicationResult.Exception -> {
+                        loginUIState.value = UiState(
+                            loading = false,
+                            data = null,
+                            errors = LoginErrors(R.string.unknown_error, showError = true)
+                        )
+                    }
+
+                    is CommunicationResult.Success -> {
+                        loginUIState.value = UiState(
+                            loading = true,
+                            data = result.data,
+                            errors = null
+                        )
+                        dataStoreRepo.setUserToken(result.data.token)
+                    }
                 }
             }
         }

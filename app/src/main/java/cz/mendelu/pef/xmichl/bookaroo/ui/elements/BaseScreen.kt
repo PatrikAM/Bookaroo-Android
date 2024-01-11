@@ -14,11 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import cz.mendelu.pef.xmichl.bookaroo.R
+import cz.mendelu.pef.xmichl.bookaroo.testTags.BottomBarTestTags
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.BookShopMapScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfBooksScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfLibrariesScreenDestination
@@ -99,7 +101,7 @@ fun BaseScreen(
                             icon = {
                                 Icon(
                                     imageVector = navItem.icon,
-                                    contentDescription = "hello"
+                                    contentDescription = null
                                 )
                             },
                             label = {
@@ -115,7 +117,8 @@ fun BaseScreen(
                                     navigator?.navigate(navItem.destination)
                                 }
                             },
-                            alwaysShowLabel = false
+                            alwaysShowLabel = false,
+                            modifier = Modifier.testTag(navItem.testTag)
                         )
                     }
                 }
@@ -155,20 +158,28 @@ fun BaseScreen(
     }
 }
 
-enum class NavItem(val destination: String, @StringRes val title: Int, val icon: ImageVector) {
+enum class NavItem(
+    val destination: String,
+    @StringRes val title: Int,
+    val icon: ImageVector,
+    val testTag: String
+) {
     Libraries(
         ListOfLibrariesScreenDestination.route,
         R.string.libraries,
-        Icons.Filled.LibraryBooks
+        Icons.Filled.LibraryBooks,
+        BottomBarTestTags.TestTagBottomNavLibraries
     ),
     BookStores(
         BookShopMapScreenDestination.route,
         R.string.book_stores,
-        Icons.Filled.Store
+        Icons.Filled.Store,
+        BottomBarTestTags.TestTagBottomNavMap
     ),
     Books(
         ListOfBooksScreenDestination.route,
         R.string.books,
-        Icons.Filled.MenuBook
+        Icons.Filled.MenuBook,
+        BottomBarTestTags.TestTagBottomNavBooks
     ),
 }

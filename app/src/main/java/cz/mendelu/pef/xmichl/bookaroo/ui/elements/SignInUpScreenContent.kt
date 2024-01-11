@@ -15,16 +15,14 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cz.mendelu.pef.xmichl.bookaroo.R
+import cz.mendelu.pef.xmichl.bookaroo.testTags.LoginRegisterTestTags
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.login.LoginData
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.login.LoginErrors
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.login.SignInUpViewModel
@@ -79,7 +77,9 @@ fun SingInUpScreenContent(
             onClearClick = {
                 actions.onUsernameChanged(null)
             },
-            textError = errors?.usernameError
+            textError = errors?.usernameError,
+            modifier = Modifier.testTag(LoginRegisterTestTags.TestTagLoginTextField),
+            errorModifier = Modifier.testTag(LoginRegisterTestTags.TestTagLoginErrorText)
         )
 
         MyTextfield(
@@ -93,12 +93,15 @@ fun SingInUpScreenContent(
                 actions.onPasswordChanged(null)
             },
             isSecret = true,
-            textError = errors?.passwordError
+            textError = errors?.passwordError,
+            modifier = Modifier.testTag(LoginRegisterTestTags.TestTagPasswordTextField),
+            errorModifier = Modifier.testTag(LoginRegisterTestTags.TestTagPasswordErrorText)
         )
 
         Button(
             modifier = Modifier
-                .fillMaxWidth(0.8F),
+                .fillMaxWidth(0.8F)
+                .testTag(LoginRegisterTestTags.TestTagLoginRegisterButton),
             enabled = !isLoading,
             colors = ButtonDefaults.buttonColors(containerColor = bookarooPrimaryColor),
             onClick = onPrimaryButtonClick
@@ -118,6 +121,7 @@ fun SingInUpScreenContent(
         OutlinedButton(
             onClick = onSecondaryButtonClick,
             enabled = !isLoading,
+            modifier = Modifier.testTag(LoginRegisterTestTags.TestTagChangeLoginRegisterButton)
         ) {
 //            Text("Sign Up")
             secondaryButtonText()

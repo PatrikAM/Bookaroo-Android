@@ -46,4 +46,5 @@
     <string name="open">open</string>
     <string name="failed_to_fetch_bookshops">Failed to fetch bookshops</string>
     <string name="bookaroo_needs_to_use_your_location">Bookaroo needs to use your location to show nearest bookshops. If not allowed will show default. Please allow location in Android settings.</string>
+    <string name="sadly_this_is_not_valid_isbn">Sadly, this is not valid ISBN</string>
 </resources>

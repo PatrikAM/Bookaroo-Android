@@ -34,7 +34,7 @@ import androidx.compose.ui.window.DialogProperties
 @Composable
 private fun LoadingDialog(
     cornerRadius: Dp = 16.dp,
-    progressIndicatorColor: androidx.compose.ui.graphics.Color = Color(0xFF35898f),
+    progressIndicatorColor: Color = Color(0xFF35898f),
     progressIndicatorSize: Dp = 80.dp
 ) {
     AlertDialog(
@@ -65,7 +65,7 @@ private fun LoadingDialog(
             Text(
                 text = "Please wait...",
                 style = TextStyle(
-                    color = androidx.compose.ui.graphics.Color.Black,
+                    color = Color.Black,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal
                 )
@@ -77,7 +77,7 @@ private fun LoadingDialog(
 @Composable
 private fun ProgressIndicatorLoading(
     progressIndicatorSize: Dp,
-    progressIndicatorColor: androidx.compose.ui.graphics.Color
+    progressIndicatorColor: Color
 ) {
     val infiniteTransition = rememberInfiniteTransition()
 
@@ -99,7 +99,7 @@ private fun ProgressIndicatorLoading(
                 12.dp,
                 brush = Brush.sweepGradient(
                     listOf(
-                        androidx.compose.ui.graphics.Color.White, // add background color first
+                        Color.White, // add background color first
                         progressIndicatorColor.copy(alpha = 0.1f),
                         progressIndicatorColor
                     )
@@ -107,6 +107,6 @@ private fun ProgressIndicatorLoading(
                 shape = CircleShape
             ),
         strokeWidth = 1.dp,
-        color = androidx.compose.ui.graphics.Color.White // Set background color
+        color = Color.White // Set background color
     )
 }

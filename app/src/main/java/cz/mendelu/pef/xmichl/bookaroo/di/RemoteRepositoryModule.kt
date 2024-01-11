@@ -1,6 +1,5 @@
 package cz.mendelu.pef.xmichl.bookaroo.di
 
-import android.content.Context
 import cz.mendelu.pef.xmichl.bookaroo.communication.book.BookRemoteRepositoryImpl
 import cz.mendelu.pef.xmichl.bookaroo.communication.book.BooksApi
 import cz.mendelu.pef.xmichl.bookaroo.communication.book.IBookRemoteRepository
@@ -17,7 +16,6 @@ import cz.mendelu.pef.xmichl.bookaroo.communication.reader.IReaderRemoteReposito
 import cz.mendelu.pef.xmichl.bookaroo.communication.reader.ReaderApi
 import cz.mendelu.pef.xmichl.bookaroo.communication.reader.ReaderRemoteRepositoryImpl
 import cz.mendelu.pef.xmichl.bookaroo.datastore.DataStoreRepositoryImpl
-import cz.mendelu.pef.xmichl.bookaroo.datastore.IDataStoreRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
