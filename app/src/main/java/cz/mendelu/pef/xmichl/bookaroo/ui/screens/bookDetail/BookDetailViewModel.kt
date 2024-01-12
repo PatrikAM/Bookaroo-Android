@@ -10,7 +10,9 @@ import cz.mendelu.pef.xmichl.bookaroo.R
 import cz.mendelu.pef.xmichl.bookaroo.architecture.BaseViewModel
 import cz.mendelu.pef.xmichl.bookaroo.architecture.CommunicationResult
 import cz.mendelu.pef.xmichl.bookaroo.communication.book.IBookRemoteRepository
+import cz.mendelu.pef.xmichl.bookaroo.communication.library.ILibraryRemoteRepository
 import cz.mendelu.pef.xmichl.bookaroo.model.Book
+import cz.mendelu.pef.xmichl.bookaroo.model.Library
 import cz.mendelu.pef.xmichl.bookaroo.model.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,6 +22,7 @@ import javax.inject.Inject
 class BookDetailViewModel
 @Inject constructor(
     private val repository: IBookRemoteRepository,
+    private val libRepository: ILibraryRemoteRepository,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel(), BookActions {
 
@@ -29,6 +32,8 @@ class BookDetailViewModel
 
     val uiState: MutableState<UiState<Book, BookErrors>> =
         mutableStateOf(UiState())
+
+    var library: Library? = null
 
     init {
         fetchBook()
@@ -82,11 +87,42 @@ class BookDetailViewModel
                 }
 
                 is CommunicationResult.Success -> {
-                    uiState.value = UiState(
-                        loading = false,
-                        data = result.data,
-                        errors = null
-                    )
+//                    uiState.value = UiState(
+//                        loading = false,
+//                        data = result.data,
+//                        errors = null
+//                    )
+                    uiState.value.data = result.data
+                    fetchLibrary()
+                }
+            }
+        }
+    }
+
+    private fun fetchLibrary() {
+        launch {
+            when (val result =
+                libRepository.fetchLibrary(uiState.value.data!!.library!!)
+            ) {
+                is CommunicationResult.CommunicationError -> {
+                    uiState.value.loading = false
+                    bookChanged()
+                }
+
+                is CommunicationResult.Error -> {
+                    uiState.value.loading = false
+                    bookChanged()
+                }
+
+                is CommunicationResult.Exception -> {
+                    uiState.value.loading = false
+                    bookChanged()
+                }
+
+                is CommunicationResult.Success -> {
+                    library = result.data
+                    uiState.value.loading = false
+                    bookChanged()
                 }
             }
         }
@@ -139,7 +175,7 @@ class BookDetailViewModel
         uiState.value = UiState(
             loading = uiState.value.loading,
             data = uiState.value.data,
-            errors = uiState.value.errors
+            errors = uiState.value.errors,
         )
     }
 

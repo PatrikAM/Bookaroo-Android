@@ -5,8 +5,13 @@ import cz.mendelu.pef.xmichl.bookaroo.model.Library
 
 interface ILibraryRemoteRepository {
 
-    suspend fun fetchLibraries(): CommunicationResult<List<Library>>
+    suspend fun fetchLibraries()
+            : CommunicationResult<List<Library>>
 
-    suspend fun createLibrary(library: String): CommunicationResult<Library>
+    suspend fun createLibrary(library: String)
+            : CommunicationResult<Library>
+
+    suspend fun fetchLibrary(libraryId: String)
+            : CommunicationResult<Library>
 
 }

@@ -353,8 +353,17 @@ class BookAddEditViewModel
     }
 
     override fun onPublishedChanged(published: String?) {
-        uiState.value.data?.published = published
-        bookChanged()
+        if (published?.toIntOrNull() != null) {
+            uiState.value.data?.published = published
+            bookChanged()
+        }
+
+        if (published == null) {
+            uiState.value.data?.published = null
+            bookChanged()
+        }
+//        uiState.value.data?.published = published
+//        bookChanged()
     }
 
     fun bookChanged() {

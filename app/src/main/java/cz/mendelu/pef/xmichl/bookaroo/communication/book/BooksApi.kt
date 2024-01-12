@@ -3,8 +3,10 @@ package cz.mendelu.pef.xmichl.bookaroo.communication.book
 import cz.mendelu.pef.xmichl.bookaroo.model.Book
 import cz.mendelu.pef.xmichl.bookaroo.model.Library
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -16,6 +18,12 @@ interface BooksApi {
         @Query("library") library: String,
         @Query("isbn") isbn: String?,
         @Query("cover") cover: String?,
+        @Query("subtitle") subtitle: String?,
+        @Query("pages") pages: Int?,
+        @Query("description") description: String?,
+        @Query("publisher") publisher: String?,
+        @Query("published") published: String?,
+        @Query("language") language: String?,
         @Query("token") userToken: String
     ) : Response<Book>
 
@@ -41,4 +49,10 @@ interface BooksApi {
         @Path("library_id") libraryId: String,
         @Query("token") token: String
     ) : Response<List<Book>>
+
+    @PUT("book")
+    suspend fun updateBook(
+        @Body book: Book,
+        @Query("token") token: String
+    ) : Response<Book>
 }

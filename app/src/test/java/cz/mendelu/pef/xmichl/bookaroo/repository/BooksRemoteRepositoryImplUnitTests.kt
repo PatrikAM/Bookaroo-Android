@@ -109,8 +109,13 @@ class BooksRemoteRepositoryImplUnitTests {
         val book1 = book.copy()
         book1.id = null
         coEvery {
-            api.createBook("", "", "", "", "", "user-1")
-        } returns Response.success(book)
+            api.createBook(
+                "", "", "",
+                "", "", null,
+                null, null, null,
+                null, null,
+                "user-1"
+            )        } returns Response.success(book)
 
         coEvery {
             dataStore.getUserToken()
@@ -134,8 +139,13 @@ class BooksRemoteRepositoryImplUnitTests {
             ResponseBody.create("application/json".toMediaTypeOrNull(), "Error body content")
 
         coEvery {
-            api.createBook("", "", "", "", "", "user-1")
-        }  returns Response.error(errorCode, errorResponseBody)
+            api.createBook(
+                "", "", "",
+                "", "", null,
+                null, null, null,
+                null, null,
+                "user-1"
+            )        }  returns Response.error(errorCode, errorResponseBody)
 
         coEvery {
             dataStore.getUserToken()
@@ -152,8 +162,13 @@ class BooksRemoteRepositoryImplUnitTests {
         val book1 = book.copy()
         book1.id = null
         coEvery {
-            api.createBook("", "", "", "", "", "user-1")
-        } throws Exception()
+            api.createBook(
+                "", "", "",
+                "", "", null,
+                null, null, null,
+                null, null,
+                "user-1"
+            )        } throws Exception()
         coEvery {
             dataStore.getUserToken()
         } returns "user-1"
@@ -168,7 +183,13 @@ class BooksRemoteRepositoryImplUnitTests {
         val book1 = book.copy()
         book1.id = null
         coEvery {
-            api.createBook("", "", "", "", "", "user-1")
+            api.createBook(
+                "", "", "",
+                "", "", null,
+                null, null, null,
+                null, null,
+                "user-1"
+            )
         } throws UnknownHostException()
         coEvery {
             dataStore.getUserToken()
@@ -184,8 +205,13 @@ class BooksRemoteRepositoryImplUnitTests {
         val book1 = book.copy()
         book1.id = null
         coEvery {
-            api.createBook("", "", "", "", "", "user-1")
-        } throws IOException()
+            api.createBook(
+                "", "", "",
+                "", "", null,
+                null, null, null,
+                null, null,
+                "user-1"
+            )        } throws IOException()
         coEvery {
             dataStore.getUserToken()
         } returns "user-1"

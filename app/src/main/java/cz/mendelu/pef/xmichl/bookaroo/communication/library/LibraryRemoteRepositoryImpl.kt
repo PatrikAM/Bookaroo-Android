@@ -34,4 +34,14 @@ class LibraryRemoteRepositoryImpl @Inject constructor(
             )
         }
     }
+
+    override suspend fun fetchLibrary(libraryId: String)
+            : CommunicationResult<Library> {
+        return processResponse {
+            librariesApi.fetchLibrary(
+                libraryId,
+                dataStoreRepository.getUserToken()!!
+                )
+        }
+    }
 }

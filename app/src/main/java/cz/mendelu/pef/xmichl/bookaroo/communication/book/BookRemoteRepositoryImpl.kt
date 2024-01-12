@@ -4,8 +4,6 @@ import cz.mendelu.pef.xmichl.bookaroo.architecture.CommunicationResult
 import cz.mendelu.pef.xmichl.bookaroo.architecture.IBaseRemoteRepository
 import cz.mendelu.pef.xmichl.bookaroo.datastore.DataStoreRepositoryImpl
 import cz.mendelu.pef.xmichl.bookaroo.model.Book
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class BookRemoteRepositoryImpl @Inject constructor(
@@ -20,9 +18,9 @@ class BookRemoteRepositoryImpl @Inject constructor(
 //        }
 //        return processResponse(response)
         return processResponse {
-                booksApi.fetchBooks(
-                    dataStoreRepository.getUserToken()!!
-                )
+            booksApi.fetchBooks(
+                dataStoreRepository.getUserToken()!!
+            )
         }
     }
 
@@ -59,13 +57,7 @@ class BookRemoteRepositoryImpl @Inject constructor(
 
     override suspend fun createBook(book: Book)
             : CommunicationResult<Book> {
-//        val response = withContext(Dispatchers.IO) {
-//            booksApi.createBook(
-//                book,
-//                dataStoreRepository.getUserToken()!!
-//            )
-//        }
-//        return processResponse(response)
+
         return processResponse {
             booksApi.createBook(
                 title = book.title!!,
@@ -73,6 +65,12 @@ class BookRemoteRepositoryImpl @Inject constructor(
                 library = book.library!!,
                 isbn = book.isbn!!,
                 cover = book.cover,
+                subtitle = book.subtitle,
+                pages = book.pages,
+                description = book.description,
+                publisher = book.publisher,
+                published = book.published,
+                language = book.language,
                 dataStoreRepository.getUserToken()!!
             )
         }
@@ -80,7 +78,12 @@ class BookRemoteRepositoryImpl @Inject constructor(
 
     override suspend fun updateBook(book: Book)
             : CommunicationResult<Book> {
-        TODO("Not yet implemented")
+        return processResponse {
+            booksApi.updateBook(
+                book,
+                dataStoreRepository.getUserToken()!!
+            )
+        }
     }
 
     override suspend fun deleteBook(bookId: String): CommunicationResult<Book> {

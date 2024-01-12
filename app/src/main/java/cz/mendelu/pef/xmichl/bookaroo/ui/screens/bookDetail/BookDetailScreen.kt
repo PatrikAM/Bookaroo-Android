@@ -1,6 +1,5 @@
 package cz.mendelu.pef.xmichl.bookaroo.ui.screens.bookDetail
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,22 +32,23 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.utils.route
 import cz.mendelu.pef.xmichl.bookaroo.R
 import cz.mendelu.pef.xmichl.bookaroo.model.Book
+import cz.mendelu.pef.xmichl.bookaroo.model.Library
 import cz.mendelu.pef.xmichl.bookaroo.model.UiState
 import cz.mendelu.pef.xmichl.bookaroo.testTags.BooksTestTags
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BaseScreen
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.DetailItem
-import cz.mendelu.pef.xmichl.bookaroo.ui.elements.HorizontalLine
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.ImageOnBlurredImage
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.PlaceholderScreenContent
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.bookAddEdit.LibraryErrors
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.BookAddEditScreenDestination
 import cz.mendelu.pef.xmichl.bookaroo.ui.screens.destinations.ListOfBooksScreenDestination
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.listOfBooks.ListOfBooksViewModel
+import cz.mendelu.pef.xmichl.bookaroo.ui.screens.listOfLibraries.ListOfLibrariesViewModel
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintAltColor
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.getTintColor
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.headLine
@@ -71,6 +71,19 @@ fun BookDetailScreen(
 
     viewModel.uiState.value.let {
         uiState.value = it
+    }
+
+    navController.currentBackStackEntry?.let {
+        if (
+            it.savedStateHandle.contains("reload")
+            && it.savedStateHandle.get<Boolean>("reload")!!
+        ) {
+            viewModel.refreshBook()
+
+            navController.currentBackStackEntry?.savedStateHandle?.remove<Boolean>(
+                "reload"
+            )
+        }
     }
 
     if (uiState.value.actionDone) {
@@ -135,7 +148,8 @@ fun BookDetailScreen(
         BookDetailScreenContent(
             paddingValues = it,
             data = uiState.value.data!!,
-            actions = viewModel
+            actions = viewModel,
+            library = viewModel.library
         )
     }
 }
@@ -144,6 +158,7 @@ fun BookDetailScreen(
 fun BookDetailScreenContent(
     paddingValues: PaddingValues,
     data: Book,
+    library: Library? = null,
     actions: BookActions
 ) {
     val context = LocalContext.current
@@ -246,6 +261,17 @@ fun BookDetailScreenContent(
 //        HorizontalLine()
 
         Column {
+
+            library?.let {
+                DetailItem(
+                    key = stringResource(R.string.library),
+                    value = it.name!!
+                ) { key, value ->
+                    actions.insertToClipboard(key, value, context = context)
+                }
+//                Text(text = it.name!!, color = getTintColor())
+            }
+
             data.publisher?.let {
                 DetailItem(
                     key = stringResource(R.string.publisher),
@@ -262,7 +288,7 @@ fun BookDetailScreenContent(
                 ) { key, value ->
                     actions.insertToClipboard(key, value, context = context)
                 }
-                Text(text = it, color = getTintColor())
+//                Text(text = it, color = getTintColor())
             }
 
             data.description?.let {
