@@ -25,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,6 +36,7 @@ import cz.mendelu.pef.xmichl.bookaroo.R
 import cz.mendelu.pef.xmichl.bookaroo.model.Book
 import cz.mendelu.pef.xmichl.bookaroo.model.Library
 import cz.mendelu.pef.xmichl.bookaroo.model.UiState
+import cz.mendelu.pef.xmichl.bookaroo.testTags.BooksTestTags
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BaseScreen
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BookarooDialog
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.MyTextfield
@@ -87,6 +89,8 @@ fun BookAddEditScreen(
         ?.let {
             if (viewModel.showDialog) {
                 BookarooDialog(
+                    modifierDismissButton = Modifier.testTag(BooksTestTags.TestTagBookDismissDialogButton),
+                    modifier = Modifier.testTag(BooksTestTags.TestTagBookFillFormDialog),
                     content = PlaceholderScreenContent(
                         image = viewModel.image,
                         text = if (viewModel.responseError != null) {
@@ -109,6 +113,7 @@ fun BookAddEditScreen(
         showLoading = uiState.value.loading,
         actions = {
             Button(
+                modifier = Modifier.testTag(BooksTestTags.TestTagBookSaveButton),
                 enabled = !viewModel.uiState.value.loading,
 //                || (bookId == null && isbn == null),
                 onClick = {
@@ -167,7 +172,8 @@ fun BookAddEditScreenContent(
     Column(
         Modifier
             .padding(paddingValues)
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .testTag(BooksTestTags.TestTagBookForm),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         MyTextfield(
@@ -177,7 +183,8 @@ fun BookAddEditScreenContent(
             label = "* " + stringResource(R.string.title),
             onClearClick = { actions.onTitleChanged(null) },
             textError = valueErrors.titleError,
-            isError = { it && data.title == null }
+            isError = { it && data.title == null },
+            modifier = Modifier.testTag(BooksTestTags.TestTagBookTitleTextField)
         )
 
         MyTextfield(
@@ -187,7 +194,8 @@ fun BookAddEditScreenContent(
             label = "* " + stringResource(id = R.string.author),
             onClearClick = { actions.onAuthorChanged(null) },
             textError = valueErrors.authorError,
-            isError = { it && data.author == null }
+            isError = { it && data.author == null },
+            modifier = Modifier.testTag(BooksTestTags.TestTagBookAuthorTextField)
         )
 
         MyTextfield(
@@ -197,7 +205,8 @@ fun BookAddEditScreenContent(
             label = "* " + "ISBN",
             onClearClick = { actions.onISBNChanged(null) },
             textError = valueErrors.isbnError,
-            isError = { it && data.author == null }
+            isError = { it && data.author == null },
+            modifier = Modifier.testTag(BooksTestTags.TestTagBookISBNTextField)
         )
 
         SelectItemElement(
@@ -217,7 +226,7 @@ fun BookAddEditScreenContent(
             onItemSelected = { id, item ->
                 actions.onLibraryChanged(id)
             },
-            isLibraryCreationDone = isLibraryCreationDone
+            isLibraryCreationDone = isLibraryCreationDone,
         )
 
         Row(

@@ -33,15 +33,25 @@ class BooksFakeRepository @Inject constructor(): IBookRemoteRepository {
     }
 
     override suspend fun createBook(book: Book): CommunicationResult<Book> {
-        TODO("Not yet implemented")
+        val book1 = book.copy()
+        book1.id = "book1"
+        return CommunicationResult.Success(book1)
     }
 
     override suspend fun updateBook(book: Book): CommunicationResult<Book> {
-        TODO("Not yet implemented")
+        return CommunicationResult
+            .Success(
+                book
+            )
     }
 
     override suspend fun deleteBook(bookId: String): CommunicationResult<Book> {
-        TODO("Not yet implemented")
+        return CommunicationResult
+            .Success(
+                BokarooBooksServerMock
+                    .all
+                    .first { book: Book -> book.id == bookId }
+            )
     }
 
 }

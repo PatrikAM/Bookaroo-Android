@@ -20,19 +20,19 @@ data class GPlace(
 
 //@JsonClass(generateAdapter = true)
 data class BookShop(
-    val geometry: Geometry?,
-    val place: String?,
-    val name: String?,
-    val reference: String?,
-    val icon: String?,
-    val rating: Double?,
-    val opening_hours: OpeningHours?,
-    val formatted_address: String?,
-    val photos: List<Photo>?,
-    val place_id: String?,
-    val formatted_phone_number: String?,
-    val international_phone_number: String?,
-    val url: String?,
+    val geometry: Geometry? = null,
+    val place: String? = null,
+    val name: String? = null,
+    val reference: String? = null,
+    val icon: String? = null,
+    val rating: Double? = null,
+    val opening_hours: OpeningHours? = null,
+    val formatted_address: String? = null,
+    val photos: List<Photo>? = null,
+    val place_id: String? = null,
+    val formatted_phone_number: String? = null,
+    val international_phone_number: String? = null,
+    val url: String? = null,
 ) : Serializable, ClusterItem {
 
     fun getColorIsOpen(): Color {

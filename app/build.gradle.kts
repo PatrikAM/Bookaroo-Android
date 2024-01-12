@@ -61,6 +61,9 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+        packaging {
+            resources.excludes.add("META-INF/*")
+        }
     }
 }
 
@@ -105,6 +108,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.test:monitor:1.6.1")
+    implementation("androidx.test:rules:1.5.0")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.testng:testng:6.9.6")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

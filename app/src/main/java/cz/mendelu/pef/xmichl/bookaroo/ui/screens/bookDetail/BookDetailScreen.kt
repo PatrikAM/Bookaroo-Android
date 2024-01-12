@@ -114,6 +114,7 @@ fun BookDetailScreen(
                 )
             }
             IconButton(
+                modifier = Modifier.testTag(BooksTestTags.TestTagBookEditButton),
                 onClick = {
                     navigator.navigate(BookAddEditScreenDestination(bookId))
                 }

@@ -35,11 +35,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import cz.mendelu.pef.xmichl.bookaroo.R
 import cz.mendelu.pef.xmichl.bookaroo.model.Library
+import cz.mendelu.pef.xmichl.bookaroo.testTags.BooksTestTags
 import cz.mendelu.pef.xmichl.bookaroo.ui.theme.basicMargin
 
 @Composable
@@ -67,7 +69,7 @@ fun SelectItemElement(
             label = { Text(label) },
             value = value ?: "",
             enabled = enabled,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth().testTag(BooksTestTags.TestTagBookLibraryTextField),
             trailingIcon = {
 //                val icon = expanded.select(Icons.Filled.ArrowDropUp, Icons.Filled.ArrowDropDown)
                 Icon(Icons.Default.ExpandMore, "")
@@ -79,6 +81,7 @@ fun SelectItemElement(
         // Transparent clickable surface on top of OutlinedTextField
         Surface(
             modifier = Modifier
+                .testTag(BooksTestTags.TestTagBookLibSelector)
                 .fillMaxSize()
                 .padding(top = 8.dp)
                 .clip(MaterialTheme.shapes.extraSmall)
@@ -138,6 +141,10 @@ fun SelectItemElement(
                                     text = it1,
                                     selected = selectedItem,
                                     enabled = true,
+                                    modifierOption = Modifier
+                                        .testTag(
+                                            BooksTestTags.TestTagBookLibraryOption + it.id
+                                        )
                                 ) {
                                     onItemSelected(it.id, it)
                                     expanded = false
@@ -201,8 +208,8 @@ fun LargeDropdownMenuItem(
     selected: Boolean,
     enabled: Boolean,
     leadingIcon: ImageVector? = null,
+    modifierOption: Modifier = Modifier,
     onClick: () -> Unit,
-
     ) {
     val contentColor = when {
         !enabled -> MaterialTheme.colorScheme.onSurface
@@ -212,7 +219,7 @@ fun LargeDropdownMenuItem(
 
     CompositionLocalProvider(LocalContentColor provides contentColor) {
 
-        Box(modifier = Modifier
+        Box(modifier = modifierOption
             .clickable(enabled) { onClick() }
             .fillMaxWidth()
             .padding(16.dp)) {

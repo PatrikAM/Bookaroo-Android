@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -57,6 +58,7 @@ import cz.mendelu.pef.xmichl.bookaroo.R
 import cz.mendelu.pef.xmichl.bookaroo.map.CustomMapRenderer
 import cz.mendelu.pef.xmichl.bookaroo.model.BookShop
 import cz.mendelu.pef.xmichl.bookaroo.model.UiState
+import cz.mendelu.pef.xmichl.bookaroo.testTags.PlacesTestTags
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BaseScreen
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BookShopDetail
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BookarooDialog
@@ -115,30 +117,9 @@ fun BookShopMapScreen(navigator: DestinationsNavigator) {
         }
     }
 
-//    viewModel.startLocationUpdates(context)
     LaunchedEffect(context) {
         viewModel.startLocationUpdates(context)
     }
-
-//    LaunchedEffect(viewModel.location) {
-//        val permission = Manifest.permission.ACCESS_COARSE_LOCATION
-//        val res = context.checkCallingOrSelfPermission(permission)
-//        if (res == PackageManager.PERMISSION_GRANTED) {
-//            getUserLocation(context = context).let {
-//                if (it.latitude != 0.0 && it.longitude != 0.0) {
-//                    viewModel.location = it
-//                    viewModel.mapDataChanged()
-//                    LaunchedEffect(viewModel.location) {
-//                        viewModel.fetchPlaces()
-//                    }
-//                }
-//            }
-////            LaunchedEffect(viewModel.location) {
-////                viewModel.fetchPlaces()
-////                Log.d("location", "${viewModel.location}")
-////            }
-////        }
-//    }
 
     if (viewModel.showDialog) {
         BookarooDialog(
@@ -243,7 +224,7 @@ fun BookShopMapScreenContent(
             .padding(paddingValues)
     ) {
         GoogleMap(
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier.fillMaxHeight().testTag(PlacesTestTags.TestTagMapMap),
             uiSettings = mapUiSettings,
             cameraPositionState = cameraPositionState
         ) {
@@ -257,17 +238,14 @@ fun BookShopMapScreenContent(
                     if (manager == null) {
                         manager = ClusterManager(context, googleMap)
                         customRenderer = CustomMapRenderer(context, googleMap!!, manager!!)
-//                        manager?.setOnClusterItemClickListener {
-//                            actions.onClusterItemClick(it)
-//                            true
-//                        }
 
                         manager?.apply {
-//                            algorithm = GridBasedAlgorithm()
                             renderer = customRenderer
                         }
 
-                        manager?.addItems(mapData.places)
+                        manager?.addItems(
+                            mapData.places
+                        )
 
                     }
 

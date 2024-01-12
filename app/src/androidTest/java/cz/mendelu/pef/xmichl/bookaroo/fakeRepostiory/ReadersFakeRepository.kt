@@ -23,12 +23,12 @@ class ReadersFakeRepository @Inject constructor(): IReaderRemoteRepository {
         )
     }
 
-    override suspend fun logout(): CommunicationResult<BookarooApiResponse> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun closeAccount(): CommunicationResult<BookarooApiResponse> {
-        TODO("Not yet implemented")
-    }
+//    override suspend fun logout(): CommunicationResult<BookarooApiResponse> {
+//        TODO("Not yet implemented")
+//    }
+//
+//    override suspend fun closeAccount(): CommunicationResult<BookarooApiResponse> {
+//        TODO("Not yet implemented")
+//    }
 
 }

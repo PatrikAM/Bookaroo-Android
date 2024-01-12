@@ -32,11 +32,14 @@ fun BookarooDialog(
 //    cornerRadius: Dp = 16.dp,
 //    progressIndicatorColor: androidx.compose.ui.graphics.Color = Color(0xFF35898f),
 //    progressIndicatorSize: Dp = 80.dp,
+    modifier: Modifier = Modifier,
+    modifierDismissButton: Modifier = Modifier,
     content: PlaceholderScreenContent,
     onDismiss: () -> Unit
 ) {
 
     AlertDialog(
+        modifier = modifier,
         onDismissRequest = onDismiss,
         properties = DialogProperties(
             usePlatformDefaultWidth = false // disable the default size so that we can customize it
@@ -77,7 +80,10 @@ fun BookarooDialog(
                     )
                 }
                 Spacer(modifier = Modifier.height(basicMargin()))
-                Button(onClick = onDismiss) {
+                Button(
+                    modifier = modifierDismissButton,
+                    onClick = onDismiss
+                ) {
                     Text("Ok")
                 }
             }

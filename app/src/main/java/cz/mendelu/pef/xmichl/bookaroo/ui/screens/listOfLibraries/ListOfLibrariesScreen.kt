@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,6 +25,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import cz.mendelu.pef.xmichl.bookaroo.R
 import cz.mendelu.pef.xmichl.bookaroo.model.Library
 import cz.mendelu.pef.xmichl.bookaroo.model.UiState
+import cz.mendelu.pef.xmichl.bookaroo.testTags.LibrariesTestTags
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BaseScreen
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.BookarooBigCard
 import cz.mendelu.pef.xmichl.bookaroo.ui.elements.PlaceholderScreenContent
@@ -146,6 +148,7 @@ fun ListOfLibrariesScreenContent(
                     subtitle = "",
 //                    subtitle = it.ownerId.toString() ?: "",
                     modifier = Modifier
+                        .testTag(LibrariesTestTags.LibTestTagCard + it.id)
                         .size(width = 320.dp, height = 170.dp)
                         .fillParentMaxWidth(0.9f)
                         .padding(all = 10.dp),

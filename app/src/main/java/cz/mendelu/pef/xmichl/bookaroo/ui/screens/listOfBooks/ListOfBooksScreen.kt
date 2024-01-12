@@ -117,16 +117,18 @@ fun ListOfBooksScreen(
 
                 Spacer(modifier = Modifier.padding(basicMargin()))
 
-                Button(onClick = {
-                    checkCamPermsAndNavigate(
-                        cameraPermissionState,
-                        onShouldShowRationale = {
-                            viewModel.onPermissionError()
+                Button(
+                    modifier = Modifier.testTag(BooksTestTags.TestTagBookCreateUsingISBN),
+                    onClick = {
+                        checkCamPermsAndNavigate(
+                            cameraPermissionState,
+                            onShouldShowRationale = {
+                                viewModel.onPermissionError()
+                            }
+                        ) {
+                            navigator.navigate(BarcodeScannerScreenDestination(libraryId = libraryId))
                         }
-                    ) {
-                        navigator.navigate(BarcodeScannerScreenDestination(libraryId = libraryId))
-                    }
-                }) {
+                    }) {
                     Icon(
                         Icons.Default.DocumentScanner,
                         contentDescription = null
@@ -137,9 +139,11 @@ fun ListOfBooksScreen(
                 }
                 Spacer(modifier = Modifier.padding(bottom = smallMargin()))
 
-                OutlinedButton(onClick = {
-                    navigator.navigate(BookAddEditScreenDestination(libraryId = libraryId))
-                }) {
+                OutlinedButton(
+                    modifier = Modifier.testTag(BooksTestTags.TestTagBookCreateManually),
+                    onClick = {
+                        navigator.navigate(BookAddEditScreenDestination(libraryId = libraryId))
+                    }) {
                     Text(text = stringResource(R.string.crate_manually))
                 }
 
@@ -218,9 +222,11 @@ fun ListOfBooksScreen(
         navigator = navigator,
         currentRoute = ListOfBooksScreenDestination.route,
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                expanded = true
-            }) {
+            FloatingActionButton(
+                modifier = Modifier.testTag(BooksTestTags.TestTagBookAddButton),
+                onClick = {
+                    expanded = true
+                }) {
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = null,

@@ -36,33 +36,19 @@ class ReaderRemoteRepositoryImpl @Inject constructor(private val readerApi: Read
             )
         }
 
-//        val response = withContext(Dispatchers.IO) {
-//            readerApi.register(login = login, password = password, name = name)
-//        }
-//        return processResponse(response)
     }
 
-    override suspend fun logout(): CommunicationResult<BookarooApiResponse> {
-
-        return processResponse {
-            readerApi.logout()
-        }
-
-//        val response = withContext(Dispatchers.IO) {
+//    override suspend fun logout(): CommunicationResult<BookarooApiResponse> {
+//
+//        return processResponse {
 //            readerApi.logout()
 //        }
-//        return processResponse(response)
-    }
-
-    override suspend fun closeAccount(): CommunicationResult<BookarooApiResponse> {
-        return processResponse {
-            readerApi.closeAccount()
-        }
-        
-//        val response = withContext(Dispatchers.IO) {
+//    }
+//
+//    override suspend fun closeAccount(): CommunicationResult<BookarooApiResponse> {
+//        return processResponse {
 //            readerApi.closeAccount()
 //        }
-//        return processResponse(response)
-    }
+//    }
 
 }

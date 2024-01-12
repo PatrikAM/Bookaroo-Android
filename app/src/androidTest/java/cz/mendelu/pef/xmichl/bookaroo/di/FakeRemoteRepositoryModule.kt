@@ -5,7 +5,6 @@ import cz.mendelu.pef.xmichl.bookaroo.communication.gbooks.IGBooksRemoteReposito
 import cz.mendelu.pef.xmichl.bookaroo.communication.library.ILibraryRemoteRepository
 import cz.mendelu.pef.xmichl.bookaroo.communication.places.IPlacesRemoteRepository
 import cz.mendelu.pef.xmichl.bookaroo.communication.reader.IReaderRemoteRepository
-import cz.mendelu.pef.xmichl.bookaroo.datastore.DataStoreRepositoryImpl
 import cz.mendelu.pef.xmichl.bookaroo.fakeRepostiory.BooksFakeRepository
 import cz.mendelu.pef.xmichl.bookaroo.fakeRepostiory.GBooksFakeRepository
 import cz.mendelu.pef.xmichl.bookaroo.fakeRepostiory.LibraryFakeRepository

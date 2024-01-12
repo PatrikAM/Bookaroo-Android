@@ -10,8 +10,8 @@ interface IReaderRemoteRepository {
 
     suspend fun register(login: String, password: String, name: String): CommunicationResult<Reader>
 
-    suspend fun logout(): CommunicationResult<BookarooApiResponse>
-
-    suspend fun closeAccount(): CommunicationResult<BookarooApiResponse>
+//    suspend fun logout(): CommunicationResult<BookarooApiResponse>
+//
+//    suspend fun closeAccount(): CommunicationResult<BookarooApiResponse>
 
 }

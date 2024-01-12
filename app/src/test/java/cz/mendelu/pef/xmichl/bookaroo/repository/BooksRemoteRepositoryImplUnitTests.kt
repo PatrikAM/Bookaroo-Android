@@ -104,7 +104,6 @@ class BooksRemoteRepositoryImplUnitTests {
         Assert.assertTrue(result is CommunicationResult.Exception)
     }
 
-
     @Test
     fun test_create_book_success() = runBlocking {
         val book1 = book.copy()

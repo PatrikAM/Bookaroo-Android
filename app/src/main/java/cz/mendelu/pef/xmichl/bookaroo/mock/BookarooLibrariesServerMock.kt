@@ -3,7 +3,7 @@ package cz.mendelu.pef.xmichl.bookaroo.mock
 import cz.mendelu.pef.xmichl.bookaroo.model.Book
 import cz.mendelu.pef.xmichl.bookaroo.model.Library
 
-object BokarooLibrariesServerMock {
+object BookarooLibrariesServerMock {
 
     enum class Library(s: String) {
         lib1("Lib1"),

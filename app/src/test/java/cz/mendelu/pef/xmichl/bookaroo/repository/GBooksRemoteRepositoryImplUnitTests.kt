@@ -3,7 +3,6 @@ package cz.mendelu.pef.xmichl.bookaroo.repository
 import cz.mendelu.pef.xmichl.bookaroo.architecture.CommunicationResult
 import cz.mendelu.pef.xmichl.bookaroo.communication.gbooks.GBooksApi
 import cz.mendelu.pef.xmichl.bookaroo.communication.gbooks.GBooksRemoteRepositoryImpl
-import cz.mendelu.pef.xmichl.bookaroo.datastore.DataStoreRepositoryImpl
 import cz.mendelu.pef.xmichl.bookaroo.model.GBook
 import cz.mendelu.pef.xmichl.bookaroo.model.GBooks
 import cz.mendelu.pef.xmichl.bookaroo.model.VolumeInfo
@@ -21,7 +20,6 @@ import java.net.UnknownHostException
 class GBooksRemoteRepositoryImplUnitTests {
 
     private val api = mockk<GBooksApi>()
-    private val dataStore = mockk<DataStoreRepositoryImpl>()
 
     private val repository = GBooksRemoteRepositoryImpl(api)
 
