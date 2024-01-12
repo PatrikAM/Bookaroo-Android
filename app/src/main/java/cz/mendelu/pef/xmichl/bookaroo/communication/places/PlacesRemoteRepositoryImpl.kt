@@ -19,13 +19,13 @@ class PlacesRemoteRepositoryImpl @Inject constructor(
 
 //        val response = withContext(Dispatchers.IO) {
 //            placesApi.getBookStores(
-//                ""
+//                "",
+//                location = ""
 //            )
 //        }
 //        return processResponse(response)
 
         return processResponse {
-//            Log.d("location", "${location.latitude}%2C${location.longitude}")
             placesApi.getBookStores(
                 "",
                 location = "${location.latitude}%2C${location.longitude}"

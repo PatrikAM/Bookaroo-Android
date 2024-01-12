@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class GBooks(
     val totalItems: Int?,
-    val items: List<GBook>?
+    val items: List<GBook>
 )
 
 @JsonClass(generateAdapter = true)

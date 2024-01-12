@@ -106,6 +106,97 @@ class BooksRemoteRepositoryImplUnitTests {
 
 
     @Test
+    fun test_create_book_success() = runBlocking {
+        val book1 = book.copy()
+        book1.id = null
+        coEvery {
+            api.createBook("", "", "", "", "", "user-1")
+        } returns Response.success(book)
+
+        coEvery {
+            dataStore.getUserToken()
+        } returns "user-1"
+
+        val result = repository.createBook(book1)
+
+        Assert.assertTrue(result is CommunicationResult.Success)
+
+        val data = (result as CommunicationResult.Success).data
+
+        Assert.assertEquals(data, book)
+    }
+
+    @Test
+    fun test_create_book_error() = runBlocking {
+        val book1 = book.copy()
+        book1.id = null
+        val errorCode = 404
+        val errorResponseBody =
+            ResponseBody.create("application/json".toMediaTypeOrNull(), "Error body content")
+
+        coEvery {
+            api.createBook("", "", "", "", "", "user-1")
+        }  returns Response.error(errorCode, errorResponseBody)
+
+        coEvery {
+            dataStore.getUserToken()
+        } returns "user-1"
+
+        val result = repository.createBook(book1)
+
+        Assert.assertTrue(result is CommunicationResult.Error)
+
+    }
+
+    @Test
+    fun test_create_book_exception() = runBlocking {
+        val book1 = book.copy()
+        book1.id = null
+        coEvery {
+            api.createBook("", "", "", "", "", "user-1")
+        } throws Exception()
+        coEvery {
+            dataStore.getUserToken()
+        } returns "user-1"
+
+        val result = repository.createBook(book1)
+
+        Assert.assertTrue(result is CommunicationResult.Exception)
+    }
+
+    @Test
+    fun test_create_book_communicationError() = runBlocking {
+        val book1 = book.copy()
+        book1.id = null
+        coEvery {
+            api.createBook("", "", "", "", "", "user-1")
+        } throws UnknownHostException()
+        coEvery {
+            dataStore.getUserToken()
+        } returns "user-1"
+
+        val result = repository.createBook(book1)
+
+        Assert.assertTrue(result is CommunicationResult.CommunicationError)
+    }
+
+    @Test
+    fun test_create_book_IOException() = runBlocking {
+        val book1 = book.copy()
+        book1.id = null
+        coEvery {
+            api.createBook("", "", "", "", "", "user-1")
+        } throws IOException()
+        coEvery {
+            dataStore.getUserToken()
+        } returns "user-1"
+
+        val result = repository.createBook(book1)
+
+        Assert.assertTrue(result is CommunicationResult.Exception)
+    }
+
+    @Test
     fun test_fetch_book_success() = runBlocking {
         coEvery {
             api.fetchBook(book.id!!, "user-1")
