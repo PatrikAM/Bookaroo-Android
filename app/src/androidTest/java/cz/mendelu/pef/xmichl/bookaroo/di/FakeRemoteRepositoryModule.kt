@@ -22,7 +22,6 @@ import dagger.hilt.testing.TestInstallIn
 )
 abstract class FakeRemoteRepositoryModule {
 
-    // datastore?
     @Binds
     abstract fun provideBookRepository(service: BooksFakeRepository): IBookRemoteRepository
 

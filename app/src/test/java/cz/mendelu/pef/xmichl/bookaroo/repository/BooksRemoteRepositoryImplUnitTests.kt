@@ -115,7 +115,8 @@ class BooksRemoteRepositoryImplUnitTests {
                 null, null, null,
                 null, null,
                 "user-1"
-            )        } returns Response.success(book)
+            )
+        } returns Response.success(book)
 
         coEvery {
             dataStore.getUserToken()

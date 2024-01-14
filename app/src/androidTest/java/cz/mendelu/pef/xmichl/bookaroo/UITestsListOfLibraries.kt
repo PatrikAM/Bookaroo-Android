@@ -51,7 +51,6 @@ class UITestsListOfLibraries {
 
             waitForIdle()
             Thread.sleep(1000)
-
         }
 
     }

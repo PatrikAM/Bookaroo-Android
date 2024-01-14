@@ -4,7 +4,7 @@ import cz.mendelu.pef.xmichl.bookaroo.architecture.CommunicationResult
 import cz.mendelu.pef.xmichl.bookaroo.communication.library.LibrariesApi
 import cz.mendelu.pef.xmichl.bookaroo.communication.library.LibraryRemoteRepositoryImpl
 import cz.mendelu.pef.xmichl.bookaroo.datastore.DataStoreRepositoryImpl
-import cz.mendelu.pef.xmichl.bookaroo.mock.BokarooLibrariesServerMock
+import cz.mendelu.pef.xmichl.bookaroo.mock.BookarooLibrariesServerMock
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -23,8 +23,8 @@ class LibraryRemoteRepositoryImplUnitTests {
 
     private val repository = LibraryRemoteRepositoryImpl(api, dataStore)
 
-    private val libs = BokarooLibrariesServerMock.all
-    private val lib = BokarooLibrariesServerMock.lib1
+    private val libs = BookarooLibrariesServerMock.all
+    private val lib = BookarooLibrariesServerMock.lib1
 
     @Test
     fun test_fetch_libraries_success() = runBlocking {

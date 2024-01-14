@@ -111,7 +111,10 @@ class UITestBookDetail {
         composeRule.activity.setContent {
             BookarooTheme {
                 navController = rememberNavController()
-                DestinationsNavHost(navGraph = NavGraphs.root, navController = navController)
+                DestinationsNavHost(
+                    navGraph = NavGraphs.root,
+                    navController = navController
+                )
             }
         }
     }
